@@ -1,0 +1,45 @@
+{% extends "todo/base.html" %}
+{% block title %} {{ user_profile.user.username }}'s' ToDo List {% endblock title %}
+
+
+
+{% block content %}
+	<h1>{{ user_profile.user.username }}'s ToDo List:</h1>
+
+	<!-- Checks if this page was requested with an error and posts it here -->
+	{% if error %}
+		<strong><span style="color:red">{{error}}</span></strong> <br/>
+	{% endif %}
+
+	<!-- Form used for entering the task objects -->
+	<form id="task_form" method="post">
+	  {% csrf_token %}
+	  {{ task_form.text }}
+	  <input type="submit" value="Submit"/>
+	</form>
+
+
+	<!-- Form used for deleting the checked task objects -->
+	<form id="remove_task" method="post">
+
+		<ol id="task_list">
+		{% for task in task_list %}
+
+		    <li name="{{ task.pk }}"> <input type="checkbox" name="{{ task.pk }}"> {{ task.text }}</li>
+
+		{% endfor %}
+		</ol>
+
+		{% csrf_token %}
+		<br/><br/>
+		<input type="submit" name="remove" value="Delete Selected" />
+
+	</form>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('body').css('background-image', 'url({{ user_profile.backgroundimage }})');
+    });
+</script>
+	
+{% endblock content %}

@@ -1,0 +1,33 @@
+/* Hector Ramos */
+/* April 13, 2016 */
+@charset "utf-8";
+
+body {
+    background-image: url("img/forest.jpg");
+}
+
+#aggro {
+    position: fixed;
+    left: 0%;
+    bottom: 0%;
+    height: 15%;
+    width: 15%;
+    background-image: url("img/aggro.jpg");
+    background-size: 100% 100%;
+}
+
+#cricket {
+    position: fixed;
+    left: 90%;
+    bottom: 90%;
+    height: 10%;
+    width: 10%;
+    background-image: url("img/cricket.png");  
+    background-size: 100% 100%;
+}
+
+#score {
+    position: fixed;
+    left: 0%;
+    bottom: 0%;
+}

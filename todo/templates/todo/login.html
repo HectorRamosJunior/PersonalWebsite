@@ -1,0 +1,23 @@
+{% extends "todo/base.html" %}
+{% block title %}Todo List Login{% endblock title %}
+
+{% block content %}
+    <h1>ToDoList Login</h1>
+
+    <form id="login_form" action="/todo/login/" method="post">
+      {% csrf_token %}
+        
+      <!-- Checks if this page was requested with an error and posts it here -->
+      {% if error %}
+        <strong><span style="color:red">{{error}}</span></strong> <br/>
+      {% endif %}
+
+      Username: <input type="text" name="username" value="" size="50" autofocus />
+      <br/>
+      Password: <input type="password" name="password" value="" size="50"/>
+      <br/>
+
+      <input type="submit" value="Submit"/>
+    </form>
+
+{% endblock content %}

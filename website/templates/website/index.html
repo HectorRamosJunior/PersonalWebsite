@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+  <head>
+    <title>{% block title %}{% endblock title %}</title>    
+    <meta charset="utf-8">
+    <!--<link rel="stylesheet" href="{% static "website/style.css" %}" />
+    <script type="text/javascript" src="{% static "website/script.js" %}" charset="UTF-8"></script>-->
+  </head>  
+
+    <body>
+        Personal website under construction. Please come back later!
+        <div>
+        {% block content %}
+
+        {% endblock content %}
+        </div>
+
+    </body>
+</html>
