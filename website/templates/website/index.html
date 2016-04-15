@@ -1,21 +1,13 @@
-<!DOCTYPE html>
-{% load staticfiles %}
+{% extends "website/base.html" %}
 
-<html>
-  <head>
-    <title>{% block title %}{% endblock title %}</title>    
-    <meta charset="utf-8">
-    <!--<link rel="stylesheet" href="{% static "website/style.css" %}" />
-    <script type="text/javascript" src="{% static "website/script.js" %}" charset="UTF-8"></script>-->
-  </head>  
-
-    <body>
-        Personal website under construction. Please come back later!
-        <div>
-        {% block content %}
-
-        {% endblock content %}
-        </div>
-
-    </body>
-</html>
+{% block content %}
+    <h1>Welcome to <span style="font-weight:bold; color:#ACAF2C;">Khaki</span> Template</h1>
+    <blockquote> This template has been tested in Mozilla Firefox and IE7. The page validates as XHTML 1.0 Transitional using valid CSS. It will work in browser widths of 800x600, 1024x768 &amp; 1280x1064. <br />
+      For more FREE CSS templates visit <a href="http://www.mitchinson.net">my website</a>.</blockquote>
+    <h1>Filler Text</h1>
+    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. </p>
+    <p class="post"> <a href="#" class="readmore">Read more</a> <a href="#" class="comments">Comments (3)</a> <span class="date">April 03, 2007</span> </p>
+    <h1>More Filler Text</h1>
+    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla congue, velit tristique mattis auctor, velit elit euismod diam, a interdum tortor enim eget ante. </p>
+    <p class="post"> <a href="#" class="readmore">Read more</a> <a href="#" class="comments">Comments (3)</a> <span class="date">April 03, 2007</span> </p>
+{% endblock content %}
