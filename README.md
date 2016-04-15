@@ -1,7 +1,7 @@
 # PersonalWebsite
 Repo for my personal website at http://hectorramosjr.com/. Under construction!
 
-Apps can be found on the web at:
+The web apps I made can be found at:
 
 http://www.hectorramosjr.com/AggroEats/
 
