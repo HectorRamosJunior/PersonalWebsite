@@ -21,7 +21,7 @@ $(document).ready(function() {
   var scoreObj = {curr: 0, max: 0};
   var timeObj = {timer: 0, milisecs: 5000, $missedSound: $missedSound};
 
-  alert("Click the cricket to start! time alloted between clicks gets stricter as you go! Good luck!")
+  alert("Click the cricket to start! Time alloted between clicks gets stricter as you go! Good luck!")
 
   // When the cricket is clicked, update the score and move it
   $cricket.click(function() {
