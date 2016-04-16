@@ -49,8 +49,7 @@
             <li><a class="smoothscroll" href="#about">About</a></li>
 	         <li><a class="smoothscroll" href="#resume">Resume</a></li>
             <li><a class="smoothscroll" href="#portfolio">Works</a></li>
-            <li><a class="smoothscroll" href="#testimonials">Testimonials</a></li>
-            <li><a class="smoothscroll" href="#contact">Contact</a></li>
+            <!--<li><a class="smoothscroll" href="#testimonials">Testimonials</a></li>-->
          </ul> <!-- end #nav -->
 
       </nav> <!-- end #nav-wrap -->
@@ -179,7 +178,7 @@
                   <p>
                   <ul type="disc">
                      <li>&bull; Designed Distributed Antenna Systems to improve indoor cellular performance</li>
-                     <li>&bull; Conductued field surveys for indoor performance data</li>
+                     <li>&bull; Conducted field surveys for indoor performance data</li>
                      <li>&bull; Designed plans for future improvements with building engineers</li>
                   </ul>
                   </p>
@@ -197,7 +196,7 @@
 
                   <p>
                   <ul type="disc">
-                     <li>&bull; Conductued field surveys for cell tower performance data</li>
+                     <li>&bull; Conducted field surveys for cell tower performance data</li>
                      <li>&bull; Streamlined busy work by developing Microsoft Excel, Access, and Outlook macros in VBA</li>
                      <li>&bull; Developed a macro which retrieved data from a server, organized it, made graphs, and sent an outlook email from one button press</li>
                   </ul>
@@ -263,11 +262,11 @@
                   <div class="item-wrap">
 
                      <a href="#modal-01" title="">
-                        <img alt="" src="{% static 'website/images/portfolio/coffee.jpg' %}">
+                        <img alt="" src="http://i.imgur.com/HVEurZs.jpg">
                         <div class="overlay">
                            <div class="portfolio-item-meta">
-          					      <h5>Coffee</h5>
-                              <p>Illustrration</p>
+          					      <h5>AggroEats</h5>
+                              <p>Web Game</p>
           					   </div>
                         </div>
                         <div class="link-icon"><i class="icon-plus"></i></div>
@@ -280,11 +279,11 @@
                   <div class="item-wrap">
 
                      <a href="#modal-02" title="">
-                        <img alt="" src="{% static 'website/images/portfolio/console.jpg' %}">
+                        <img alt="" src="http://i.imgur.com/aFuPaVr.jpg">
                         <div class="overlay">
                            <div class="portfolio-item-meta">
-          					      <h5>Console</h5>
-                              <p>Web Development</p>
+          					      <h5>Todo List</h5>
+                              <p>Web App</p>
           					   </div>
                         </div>
                         <div class="link-icon"><i class="icon-plus"></i></div>
@@ -297,11 +296,11 @@
                   <div class="item-wrap">
 
                      <a href="#modal-03" title="">
-                        <img alt="" src="{% static 'website/images/portfolio/judah.jpg' %}">
+                        <img alt="" src="http://i.imgur.com/o303mZT.png">
                         <div class="overlay">
                            <div class="portfolio-item-meta">
-          					      <h5>Judah</h5>
-                              <p>Webdesign</p>
+          					      <h5>Algorithms and Data Structures</h5>
+                              <p>Github Repo</p>
           					   </div>
                         </div>
                         <div class="link-icon"><i class="icon-plus"></i></div>
@@ -309,6 +308,8 @@
 
                   </div>
           		</div> <!-- item end -->
+               
+               <!-- Future projects 
 
                <div class="columns portfolio-item">
                   <div class="item-wrap">
@@ -325,7 +326,7 @@
                      </a>
 
                   </div>
-          		</div> <!-- item end -->
+          		</div>
 
                <div class="columns portfolio-item">
                   <div class="item-wrap">
@@ -342,7 +343,7 @@
                      </a>
 
                   </div>
-          		</div> <!-- item end -->
+          		</div>
 
                <div class="columns portfolio-item">
                   <div class="item-wrap">
@@ -359,7 +360,7 @@
                      </a>
 
                   </div>
-          		</div> <!-- item end -->
+          		</div>
 
                <div class="columns portfolio-item">
                   <div class="item-wrap">
@@ -376,7 +377,7 @@
                      </a>
 
                   </div>
-          		</div> <!-- item end -->
+          		</div>
 
                <div class="columns portfolio-item">
                   <div class="item-wrap">
@@ -393,7 +394,9 @@
                      </a>
 
                   </div>
-          		</div>  <!-- item end -->
+          		</div>
+
+               Future projects -->
 
             </div> <!-- portfolio-wrapper end -->
 
@@ -405,16 +408,17 @@
 
          <div id="modal-01" class="popup-modal mfp-hide">
 
-		      <img class="scale-with-grid" src="{% static 'website/images/portfolio/modals/m-coffee.jpg' %}" alt="" />
+		      <img class="scale-with-grid" src="http://i.imgur.com/HVEurZs.jpg" alt="" />
 
 		      <div class="description-box">
-			      <h4>Coffee Cup</h4>
-			      <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.</p>
-               <span class="categories"><i class="fa fa-tag"></i>Branding, Webdesign</span>
+			      <h4>Aggro Eats!</h4>
+			      <p>My girlfriend has a green anole named Aggro, and this is a web app game about it eating crickets. See how many crickets in a row you can get!</p>
+               <span class="categories"><i class="fa fa-tag"></i>Game, Javascript, jQuery</span>
 		      </div>
 
             <div class="link-box">
-               <a href="http://www.behance.net">Details</a>
+               <a href="/AggroEats">Play</a>
+               <a href="https://github.com/HectorRamosJunior/AggroEats" class="popup-modal-dismiss">Github</a>
 		         <a class="popup-modal-dismiss">Close</a>
             </div>
 
@@ -422,16 +426,17 @@
 
          <div id="modal-02" class="popup-modal mfp-hide">
 
-		      <img class="scale-with-grid" src="{% static 'website/images/portfolio/modals/m-console.jpg' %}" alt="" />
+		      <img class="scale-with-grid" src="http://i.imgur.com/aFuPaVr.jpg" alt="" />
 
 		      <div class="description-box">
-			      <h4>Console</h4>
-			      <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.</p>
-               <span class="categories"><i class="fa fa-tag"></i>Branding, Web Development</span>
+			      <h4>Todo List</h4>
+			      <p>Web app to store individual users' todo lists online. Implementation demonstrates understanding of the fullstack.</p>
+               <span class="categories"><i class="fa fa-tag"></i>Web app, Django, Javascript, jQuery, Fullstack</span>
 		      </div>
 
             <div class="link-box">
-               <a href="http://www.behance.net">Details</a>
+               <a href="todo/">Use</a>
+               <a href="https://github.com/HectorRamosJunior/ToDoList" class="popup-modal-dismiss">Github</a>
 		         <a class="popup-modal-dismiss">Close</a>
             </div>
 
@@ -439,20 +444,22 @@
 
          <div id="modal-03" class="popup-modal mfp-hide">
 
-		      <img class="scale-with-grid" src="{% static 'website/images/portfolio/modals/m-judah.jpg' %}" alt="" />
+		      <img class="scale-with-grid" src="http://i.imgur.com/o303mZT.png" alt="" />
 
 		      <div class="description-box">
-			      <h4>Judah</h4>
-			      <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.</p>
-               <span class="categories"><i class="fa fa-tag"></i>Branding</span>
+			      <h4>Algorithms and Data Structures</h4>
+			      <p>Samples of algorithm implementations to demonstrate style and understanding. Features personal implementations of data structures like hash tables and red/black trees, and contains algorithms like dynamic programming, recursive backtracking, and NP-complete problems </p>
+               <span class="categories"><i class="fa fa-tag"></i>Python, Algorithms, Data Structures</span>
 		      </div>
 
             <div class="link-box">
-               <a href="http://www.behance.net">Details</a>
+               <a href="https://github.com/HectorRamosJunior/Algorithms-and-Data-Structures">Github</a>
 		         <a class="popup-modal-dismiss">Close</a>
             </div>
 
 	      </div><!-- modal-03 End -->
+
+         <!-- Future projects 
 
          <div id="modal-04" class="popup-modal mfp-hide">
 
@@ -465,11 +472,12 @@
 		      </div>
 
             <div class="link-box">
-               <a href="http://www.behance.net">Details</a>
+               <a href="">Use App</a>
+               <a href="" class="popup-modal-dismiss">Github Repo</a>
 		         <a class="popup-modal-dismiss">Close</a>
             </div>
 
-	      </div><!-- modal-04 End -->
+	      </div>
 
          <div id="modal-05" class="popup-modal mfp-hide">
 
@@ -486,7 +494,7 @@
 		         <a class="popup-modal-dismiss">Close</a>
             </div>
 
-	      </div><!-- modal-05 End -->
+	      </div>
 
          <div id="modal-06" class="popup-modal mfp-hide">
 
@@ -503,7 +511,7 @@
 		         <a class="popup-modal-dismiss">Close</a>
             </div>
 
-	      </div><!-- modal-06 End -->
+	      </div>
 
          <div id="modal-07" class="popup-modal mfp-hide">
 
@@ -520,7 +528,7 @@
 		         <a class="popup-modal-dismiss">Close</a>
             </div>
 
-	      </div><!-- modal-07 End -->
+	      </div>
 
          <div id="modal-08" class="popup-modal mfp-hide">
 
@@ -537,7 +545,9 @@
 		         <a class="popup-modal-dismiss">Close</a>
             </div>
 
-	      </div><!-- modal-01 End -->
+	      </div>
+
+         Future projects end -->
 
 
       </div> <!-- row End -->
@@ -576,11 +586,25 @@
 
                      <li>
                         <blockquote>
-                           <p>This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet.
-                           Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem
-                           nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris.
+                           <p>A journey of a thousand miles begins with a single step.
                            </p>
-                           <cite>Mr. Adobe</cite>
+                           <cite>Chinese philosopher Laozi</cite>
+                        </blockquote>
+                     </li> <!-- slide ends -->
+
+                     <li>
+                        <blockquote>
+                           <p>Most programmers do programming not because they expect to get paid or adulation by the public, but because it is fun to program.
+                           </p>
+                           <cite>Linus Torvalds</cite>
+                        </blockquote>
+                     </li> <!-- slide ends -->
+
+                     <li>
+                        <blockquote>
+                           <p>I've missed more than 9,000 shots in my career. I've lost almost 300 games. 26 times I've been trusted to take the game winning shot and missed. I've failed over and over again my my life. <br>And that is why I succeed.
+                           </p>
+                           <cite>Micheal Jordan</cite>
                         </blockquote>
                      </li> <!-- slide ends -->
 
@@ -595,124 +619,6 @@
        </div>  <!-- text-container ends -->
 
    </section> <!-- Testimonials Section End-->
-
-
-   <!-- Contact Section
-   ================================================== -->
-   <section id="contact">
-
-         <div class="row section-head">
-
-            <div class="two columns header-col">
-
-               <h1><span>Get In Touch.</span></h1>
-
-            </div>
-
-            <div class="ten columns">
-
-                  <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam,
-                  eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
-                  voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-                  </p>
-
-            </div>
-
-         </div>
-
-         <div class="row">
-
-            <div class="eight columns">
-
-               <!-- form -->
-               <form action="" method="post" id="contactForm" name="contactForm">
-					<fieldset>
-
-                  <div>
-						   <label for="contactName">Name <span class="required">*</span></label>
-						   <input type="text" value="" size="35" id="contactName" name="contactName">
-                  </div>
-
-                  <div>
-						   <label for="contactEmail">Email <span class="required">*</span></label>
-						   <input type="text" value="" size="35" id="contactEmail" name="contactEmail">
-                  </div>
-
-                  <div>
-						   <label for="contactSubject">Subject</label>
-						   <input type="text" value="" size="35" id="contactSubject" name="contactSubject">
-                  </div>
-
-                  <div>
-                     <label for="contactMessage">Message <span class="required">*</span></label>
-                     <textarea cols="50" rows="15" id="contactMessage" name="contactMessage"></textarea>
-                  </div>
-
-                  <div>
-                     <button class="submit">Submit</button>
-                     <span id="image-loader">
-                        <img alt="" src="{% static 'website/images/loader.gif' %}">
-                     </span>
-                  </div>
-
-					</fieldset>
-				   </form> <!-- Form End -->
-
-               <!-- contact-warning -->
-               <div id="message-warning"> Error boy</div>
-               <!-- contact-success -->
-				   <div id="message-success">
-                  <i class="fa fa-check"></i>Your message was sent, thank you!<br>
-				   </div>
-
-            </div>
-
-
-            <aside class="four columns footer-widgets">
-
-               <div class="widget widget_contact">
-
-					   <h4>Address and Phone</h4>
-					   <p class="address">
-						   Jonathan Doe<br>
-						   1600 Amphitheatre Parkway <br>
-						   Mountain View, CA 94043 US<br>
-						   <span>(123) 456-7890</span>
-					   </p>
-
-				   </div>
-
-               <div class="widget widget_tweets">
-
-                  <h4 class="widget-title">Latest Tweets</h4>
-
-                  <ul id="twitter">
-                     <li>
-                        <span>
-                        This is Photoshop's version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet.
-                        Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum
-                        <a href="#">http://t.co/CGIrdxIlI3</a>
-                        </span>
-                        <b><a href="#">2 Days Ago</a></b>
-                     </li>
-                     <li>
-                        <span>
-                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam,
-                        eaque ipsa quae ab illo inventore veritatis et quasi
-                        <a href="#">http://t.co/CGIrdxIlI3</a>
-                        </span>
-                        <b><a href="#">3 Days Ago</a></b>
-                     </li>
-                  </ul>
-
-		         </div>
-
-            </aside>
-
-      </div>
-
-   </section> <!-- Contact Section End-->
-
 
    <!-- footer
    ================================================== -->

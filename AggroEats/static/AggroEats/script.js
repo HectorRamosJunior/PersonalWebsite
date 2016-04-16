@@ -74,6 +74,8 @@ function updateScore($score, scoreObj) {
 // Plays the missed sound, resets score and moves cricket to original position
 function restartGame(timeObj, scoreObj) {
   timeObj.$missedSound.play()
+  alert("Time up! Your score was " + scoreObj.curr + ", your max score so far is " + scoreObj.max +". Try again!")
+
 
   // Reset the timer and current score to orginal values
   scoreObj.curr = 0;
