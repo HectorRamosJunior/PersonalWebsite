@@ -54,8 +54,8 @@ function moveCricket($cricket, $eaten) {
 
   // Move bite element to current cricket location since it was eaten
   // Also start a timer to hide the bite graphic after .1 seconds
-  $eaten.show();
   $eaten.css({bottom: $cricket.css("bottom"), left: $cricket.css("left")});
+  $eaten.show();
   window.setTimeout(function() { $eaten.hide(); }, 100);
 
 
