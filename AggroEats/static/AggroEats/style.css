@@ -3,7 +3,7 @@
 @charset "utf-8";
 
 body {
-    background-image: url("img/forest.jpg");
+    background-image: url("http://i.imgur.com/bZY0uq8.jpg");
 }
 
 #aggro {
@@ -12,7 +12,7 @@ body {
     bottom: 0%;
     height: 15%;
     width: 15%;
-    background-image: url("img/aggro.jpg");
+    background-image: url("http://i.imgur.com/aPxcZEu.jpg");
     background-size: 100% 100%;
 }
 
@@ -22,8 +22,19 @@ body {
     bottom: 90%;
     height: 10%;
     width: 10%;
-    background-image: url("img/cricket.png");  
+    background-image: url("http://i.imgur.com/xY0qtnO.png");  
     background-size: 100% 100%;
+}
+
+#eaten {
+    position: fixed;
+    left: 90%;
+    bottom: 90%;
+    height: 10%;
+    width: 10%;
+    background-image: url("http://i.imgur.com/NIeSU27.png");  
+    background-size: 100% 100%; 
+    z-index: -1;  
 }
 
 #score {
