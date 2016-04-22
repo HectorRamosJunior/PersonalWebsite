@@ -1,0 +1,29 @@
+{% load staticfiles %}
+
+<html>
+  <head>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'AggroEats/login.css' %}" >
+  </head>
+
+  <body>
+    <div class="login-page">
+      <div class="form">
+        {% if registered %}
+        <strong>Thank you for registering!</strong><br>
+        <a href="/AggroEats/">Return to the game page!</a>
+        {% else %}
+        <form class="login-form" action="/AggroEats/register/" method="post">
+          {% csrf_token %}
+          {% if error %}
+          <strong><span style="color:red">{{ error }}</span></strong> <br/>
+          {% endif %}
+          <input type="text" placeholder="username" name="username" id="id_username" name="username" autofocus />
+          <input type="password" placeholder="password" name="password" id="id_password" />
+          <button type="submit">Register</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>

@@ -23,8 +23,6 @@ $(document).ready(function() {
   var scoreObj = {curr: 0, max: 0};
   var timeObj = {timer: 0, milisecs: 5000, $missedSound: $missedSound};
 
-  alert("Click the cricket to start! The time given to click the cricket when it moves gets shorter as you go! Good luck!");
-
   // When the cricket is clicked, update the score and move it
   $cricket.click(function() {
     endAndStartTimer(timeObj, scoreObj);
@@ -58,7 +56,6 @@ function moveCricket($cricket, $eaten) {
   $eaten.show();
   window.setTimeout(function() { $eaten.hide(); }, 100);
 
-
   // Make sure the cricket doesn't overlap with aggro
   while (left < 15 && bottom < 15) {
     left = Math.floor(Math.random() * (90 + 1));
@@ -83,20 +80,76 @@ function updateScore($score, scoreObj) {
 // Plays the missed sound, resets score and moves cricket to original position
 function restartGame(timeObj, scoreObj) {
   timeObj.$missedSound.play()
-  alert("Time up! Your score was " + scoreObj.curr + ", your max score so far is " + scoreObj.max +". Try again!");
 
+  // Ajax call to upload the score to the website's backend
+  $.ajax({
+    url : "create_score/",
+    type : "POST", // http method
+    data : { score : scoreObj.curr, csrfmiddlewaretoken: window.CSRF_TOKEN },
+
+    // handle a successful response
+    success : function(json) {
+      updateLeaderboard()
+      $('#leaderboard').modal('show');
+    },
+
+    // handle a non-successful response
+    error : function(xhr,errmsg,err) {
+      console.log("Failed to save score data. Is the user logged in?")
+      updateLeaderboard()
+      $('#leaderboard').modal('show');
+    }
+  });
 
   // Reset the timer and current score to orginal values
   scoreObj.curr = 0;
   timeObj.milisecs = 5000;
 
+  // Reset the game elements to their original positions
   $("#score").html("<b>Score: "+ scoreObj.curr +"<br>Max: "+ scoreObj.max +"</b>");
   $("#cricket").css({bottom: "90%", left: "90%"});
   $("#eaten").css({bottom: "90%", left: "90%"});
 };
 
+// Starts the timer between cricket clicks and ends game if the timer runs out
 function endAndStartTimer(timeObj, scoreObj) {
   window.clearTimeout(timeObj.timer);
   timeObj.milisecs = timeObj.milisecs / 1.05    // Reduce miliseconds for timeout
   timeObj.timer = window.setTimeout(function() { restartGame(timeObj, scoreObj); }, timeObj.milisecs);
+};
+
+// Updates the leaderboard modal on the website
+function updateLeaderboard() {
+  // Ajax call to retrieve the top 10 scores for the leaderboard
+  $.ajax({
+    url : "leaderboard/",
+    type : "POST", // http method
+    data : { csrfmiddlewaretoken: window.CSRF_TOKEN },
+
+    // handle a successful response
+    success : function(json) {
+      $("#topScores").find("tbody").empty();
+
+      // Appends the top scores to the leaderboard html table
+      for (i = 0; i < json.length; i++){
+        var tableRow = "<tr>";
+
+        // Add rank
+        tableRow += "<td>" + (i+1) + "</td>";
+        // Add username
+        tableRow += "<td>" + json[i][0] + "</td>";
+        // Add score
+        tableRow += "<td>" + json[i][1] + "</td>"
+        // Close row
+        tableRow += "</tr>"
+
+        $("#topScores").find('tbody').append(tableRow);
+      }
+    },
+
+    // handle a non-successful response
+    error : function(xhr,errmsg,err) {
+      console.log("Failed to get leaderboard data!");
+    }
+  });
 };

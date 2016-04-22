@@ -1,0 +1,24 @@
+{% load staticfiles %}
+
+<html>
+  <head>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'AggroEats/login.css' %}" >
+  </head>
+
+  <body>
+    <div class="login-page">
+      <div class="form">
+        <form class="login-form" action="/AggroEats/login/" method="post">
+          {% csrf_token %}
+          {% if error %}
+          <strong><span style="color:red">{{ error }}</span></strong> <br/>
+          {% endif %}
+          <input type="text" placeholder="username" name="username" autofocus />
+          <input type="password" placeholder="password" name="password" />
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

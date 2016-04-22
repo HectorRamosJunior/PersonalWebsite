@@ -5,12 +5,12 @@
     <h1>Register Here:</h1>
 
     {% if registered %}
-      Rango says: <strong>Thank you for registering.</strong>
+      <strong>Thank you for registering.</strong>
       <a href="/todo/">Return to the home page.</a><br/>
 
 
     {% else %}
-      Rango says: <strong>Register here!</strong><br/>
+      <strong>Register here!</strong><br/>
 
       <form action="/todo/register/" method="post"
           id="user_form" enctype="multipart/form-data">

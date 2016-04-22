@@ -13,7 +13,7 @@ class UserProfile(models.Model):
 	#backgroundimage = models.Imagefield() #For Future Use!
 
 	def __unicode__(self):
-		return self.user.username #?????
+		return self.user.username
 
 
 class Task(models.Model):
