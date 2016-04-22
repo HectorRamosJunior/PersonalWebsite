@@ -60,14 +60,20 @@ def user_register(request):
         user_form = UserForm(data=request.POST)
 
         if user_form.is_valid(): #Safeguard against bad input
-          user = user_form.save()
-          user.set_password(user.password)
-          user.save() 
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save() 
 
-          registered = True
+            registered = True
+
+            # Authenticate and login!
+            new_user = authenticate(username=user_form.cleaned_data['username'],
+                                    password=user_form.cleaned_data['password'],
+                                    )
+            login(request, new_user)
         # If there was a form error, such as a username already taken
         else:
-          error = user_form.errors
+            error = user_form.errors
     # First time visiting page, present a clean Form
     else: 
         user_form = UserForm()
@@ -78,21 +84,18 @@ def user_register(request):
 
 def user_login(request):
     if request.method == 'POST': #Trying to login?
-      username = request.POST.get('username') #Pulls the username field from the form
-      password = request.POST.get('password') #POST.get returns 'none', not KeyError
+        username = request.POST.get('username') #Pulls the username field from the form
+        password = request.POST.get('password') #POST.get returns 'none', not KeyError
 
-      user = authenticate(username=username, password=password) #Legit login?
+        user = authenticate(username=username, password=password) #Legit login?
 
-      if user: #if there's a account for the information provided
-        if user.is_active: #Not BanHammered?
-          login(request, user)
-          return redirect('/AggroEats/')
-
-      else: #Either acc or password is wrong
-        error = "Account or Password provided was incorrect."
-        return render(request, 'AggroEats/login.html', {'error': error})
-
-
+        if user: #if there's a account for the information provided
+            if user.is_active: #Not BanHammered?
+                login(request, user)
+                return redirect('/AggroEats/')
+        else: #Either acc or password is wrong
+            error = "Account or Password provided was incorrect."
+            return render(request, 'AggroEats/login.html', {'error': error})
     else: #GET, trying to login
         return render(request, 'AggroEats/login.html')
 
