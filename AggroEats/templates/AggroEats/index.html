@@ -39,6 +39,7 @@
               Click on the cricket to eat it! The cricket moves between each click, and the time given to click it each time gets shorter as you go! Good luck!
             </p>
             {% if user.is_authenticated %}
+            <br>Logged in as {{ user.username }}<br>
             <a href="logout/">Logout</a>
             {% else %}
             <p>
