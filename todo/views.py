@@ -102,6 +102,12 @@ def register(request):
 
       registered = True
 
+      # Authenticate and login!
+      new_user = authenticate(username=user_form.cleaned_data['username'],
+                              password=user_form.cleaned_data['password'],
+                              )
+      login(request, new_user)
+
     else: #If the data was entered incorrectly
       print user_form.errors, profile_form.errors #Print both form errors!
 
