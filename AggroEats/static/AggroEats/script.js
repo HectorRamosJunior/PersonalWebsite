@@ -15,6 +15,8 @@ $(document).ready(function() {
   var $score = $("#score");
   var $eaten = $("#eaten");
 
+  $eaten.hide()
+
   // Load game audio tags from DOM for future use
   var $biteSound = $("#bite").get(0);
   var $missedSound = $("#bzzt").get(0);
@@ -115,6 +117,7 @@ function restartGame(timeObj, scoreObj) {
   $("#score").html("<b>Score: "+ scoreObj.curr +"<br>Max: "+ scoreObj.max +"</b>");
   $("#cricket").css({bottom: "90%", left: "90%"});
   $("#eaten").css({bottom: "90%", left: "90%"});
+  $eaten.hide()
 };
 
 // Starts the timer between cricket clicks and ends game if the timer runs out
