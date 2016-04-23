@@ -1,19 +1,25 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 from .models import UserProfile, Task
 from .forms import UserForm, UserProfileForm, TaskForm
 import json
 
-# Create your views here.
+
 def index(request):
-	user_list = UserProfile.objects.all()
-	context = {'user_list': user_list}
-	return render(request, 'todo/index.html', context)
+  # Creates a UserProfile if the current user came from another app
+  create_profile_for_user(str(request.user.username))
+
+  # Load the list of the users for this app and push to template
+  user_list = UserProfile.objects.all()
+  context = {'user_list': user_list}
+
+  return render(request, 'todo/index.html', context)
 
 
 @login_required
@@ -135,4 +141,23 @@ def user_logout(request):
 
   return HttpResponseRedirect('/todo/') #Send em back to the index page
 
+# Function that creates the profile for the user if they created an acc
+# From another app on this project
+def create_profile_for_user(username):
+
+  try:
+    user = User.objects.get(username=username)
+  except:
+    user = None
+
+  try:
+    profile = UserProfile.objects.get(user__username=username)
+  except:
+    profile = None
+
+  # Handle if the user exists in the project but not in this app
+  if user and not profile and username != "admin":
+    profile = UserProfile()
+    profile.user = User.objects.get(username=username)
+    profile.save()
 
