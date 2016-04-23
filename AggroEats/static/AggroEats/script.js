@@ -81,6 +81,12 @@ function updateScore($score, scoreObj) {
 function restartGame(timeObj, scoreObj) {
   timeObj.$missedSound.play()
 
+  var endString = "Time's up! "
+  endString += "Your score was " + scoreObj.curr
+  endString +=  ", your max this session is " + scoreObj.max + "."
+  endString += "<br>Click on the cricket to start the game again!"
+  $("#leaderboard").find("p").html(endString)
+
   // Ajax call to upload the score to the website's backend
   $.ajax({
     url : "create_score/",
