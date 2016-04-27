@@ -21,10 +21,7 @@ def create_score(request):
         score.user = request.user
         score.save()
 
-        return HttpResponse(
-                json.dumps(""),
-                content_type="application/json"
-            )
+        return HttpResponse(json.dumps(""), content_type="application/json")
     else:
         return redirect("/AggroEats/")
 
@@ -43,10 +40,7 @@ def leaderboard(request):
 
             response_data.append(score_list)
 
-        return HttpResponse(
-                    json.dumps(response_data),
-                    content_type="application/json"
-                )
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         return redirect("/AggroEats/")
 
@@ -67,8 +61,9 @@ def user_register(request):
             registered = True
 
             # Authenticate and login!
-            new_user = authenticate(username=user_form.cleaned_data['username'],
-                                    password=user_form.cleaned_data['password'],
+            new_user = authenticate(
+                                        username=user_form.cleaned_data['username'],
+                                        password=user_form.cleaned_data['password'],
                                     )
             login(request, new_user)
         # If there was a form error, such as a username already taken
@@ -83,24 +78,27 @@ def user_register(request):
     return render(request, 'AggroEats/register.html', context)
 
 def user_login(request):
-    if request.method == 'POST': #Trying to login?
+    # Trying to log in
+    if request.method == 'POST':
         username = request.POST.get('username') #Pulls the username field from the form
         password = request.POST.get('password') #POST.get returns 'none', not KeyError
 
         user = authenticate(username=username, password=password) #Legit login?
 
-        if user: #if there's a account for the information provided
-            if user.is_active: #Not BanHammered?
+        if user:
+            # Handle if user was banned
+            if user.is_active:
                 login(request, user)
                 return redirect('/AggroEats/')
-        else: #Either acc or password is wrong
+        else:
             error = "Account or Password provided was incorrect."
             return render(request, 'AggroEats/login.html', {'error': error})
-    else: #GET, trying to login
+    # First time visiting webpage
+    else:
         return render(request, 'AggroEats/login.html')
 
-@login_required #make sure a user is logged on to use this
+@login_required
 def user_logout(request):
-    logout(request) #logs out the user
-
-    return redirect('/AggroEats/') #Send em back to the index page
+    logout(request)
+    
+    return redirect('/AggroEats/')
