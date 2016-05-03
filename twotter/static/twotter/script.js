@@ -83,7 +83,6 @@ function make_twoot($twoot_text) {
     $twoot_text.empty();
 };
 
-// $task_list.append("<li name='" + json.task_pk + "'><input type='checkbox' name='" + json.task_pk + "'>" + json.text + "</li>");
 function add_twoot_to_feed(json) {
     date = new Date(json.creation_date)
     // May 2, 2016, 4:07 p.m
