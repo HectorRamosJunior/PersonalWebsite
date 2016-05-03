@@ -3,7 +3,8 @@
 
 <html>
 <head>
-  <title>{% block title %}{% endblock title %}</title>    
+  <title>{% block title %}{% endblock title %}</title>
+  <link rel="shortcut icon" href="{% static 'twotter/favicon.ico' %}" >    
   <meta charset="utf-8">
   <link rel="stylesheet" href="{% static 'twotter/style.css' %}">
   <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
