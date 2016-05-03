@@ -1,5 +1,5 @@
 /* Hector Ramos */
-/* August 24, 2015 */
+/* April 13, 2016 */
 
 $(document).ready(function() {
   var $body = $("body");
