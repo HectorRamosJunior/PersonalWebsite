@@ -84,6 +84,7 @@ function make_twoot($twoot_text) {
 };
 
 function add_twoot_to_feed(json) {
+    console.log(json)
     date = new Date(json.creation_date)
     // May 2, 2016, 4:07 p.m
     var month_names = ["January", "February", "March", "April", "May", "June",
@@ -117,10 +118,11 @@ function add_twoot_to_feed(json) {
                         + hour + ':' + minutes + ' ' + am_or_pm;
 
     $(
-      '<div class="w3-container w3-card-2 w3-white w3-round w3-margin" style="word-wrap:break-word;"><br>' +
-        '<img src="' + json.avatar_url + '" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">' +
-        '<span class="w3-right w3-opacity">' + creation_date + '</span>' + 
-        '<h4>' + json.display_name + '</h4><br>' +
+      '<div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display"><br>' +
+        '<a href="' + window.location.origin + '/twotter/' + json.username + '/">' + 
+        '<img src="' + json.avatar_url + '" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_profile_link" style="width:60px"></a>' +
+        '<span class="w3-right w3-opacity">' + creation_date + '</span>' +
+        '<h4><a href="' + window.location.origin + '/twotter/' + json.username + '/" class="twotter_profile_link">' + json.display_name + '</a></h4><br>' +
         '<hr class="w3-clear">' +
         '<p>' + json.text + '</p>' +
         '<button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom"><i class="fa fa-heart"></i> Favorite</button> ' +

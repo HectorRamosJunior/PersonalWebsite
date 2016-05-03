@@ -73,6 +73,7 @@ def make_twoot(request):
             twoot.save()
 
             response_data = {}
+            response_data["username"] = twotter_profile.user.username
             response_data["avatar_url"] = twotter_profile.avatar_url
             response_data["creation_date"] = twoot.creation_date.isoformat()
             response_data["display_name"] = twotter_profile.display_name
