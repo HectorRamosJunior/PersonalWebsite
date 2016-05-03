@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% extends "twotter/base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+  {% if twotter_profile %}
+    {{ twotter_profile.display_name }}'s Settings
+  {% else %}
+    404 Profile Page
+  {% endif %}
+{% endblock title %}
+
+{% block content %}
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+  <!-- The Grid -->
+  <div class="w3-row">
+    <!-- Left Column -->
+    <div class="w3-col m4">
+      <!-- Profile -->
+    {% if twotter_profile %}
+      <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+         <h4 class="w3-center">{{ twotter_profile.display_name }}</h4>
+         <p class="w3-center"><img src="{{ twotter_profile.avatar_url }}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <hr>
+         <p><i class="fa fa-pencil w3-margin-right w3-text-theme"></i> {{ twotter_profile.description }}</p>
+         <p><i class="fa fa-home w3-margin-right w3-text-theme"></i> {{ twotter_profile.location }}</p>
+         <p><i class="fa fa-birthday-cake w3-margin-right w3-text-theme"></i> {{ twotter_profile.birthday }}</p>
+         <p><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> {{ twotter_profile.twoot_count }} Twoots</p>
+         <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
+        </div>
+      </div>
+      <br>
+    {% else %}
+      <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+         <h4 class="w3-center">Guest</h4>
+         <p class="w3-center"><img src="http://i.imgur.com/3iMO8An.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <hr>
+        </div>
+      </div>
+      <br>
+    {% endif %}
+
+      <div class="w3-card-2 w3-round w3-white w3-padding-hor-32 w3-center">
+        <p><i class="fa fa-bug w3-xxlarge"></i></p>
+      </div>
+
+    <!-- End Left Column -->
+    </div>
+    
+    <!-- Middle Column -->
+    <div class="w3-col m8">
+    {% if saved %}
+      <div class="w3-row-padding">
+        <div class="w3-col m12">
+          <div class="w3-card-2 w3-round w3-white">
+            <div class="w3-container w3-padding">
+              <h6 class="w3-opacity">Your changes have been saved.</h6> 
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+      <div class="w3-container w3-card-2 w3-white w3-round w3-margin" class="twoot_display"><br>
+        <h4>Account Settings:</h4><br>
+        <form class="settings_form" action="/twotter/settings/" method="post">
+          {% csrf_token %}
+          {{ settings_form.as_p }}
+          <button type="submit" name="button" value="Settings">Save Changes</button>
+        </form>
+      </div>
+    <!-- End Middle Column -->
+    </div>
+    
+    
+  <!-- End Grid -->
+  </div>
+  
+<!-- End Page Container -->
+</div>
+<br>
+{% endblock content %}

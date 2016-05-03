@@ -1,0 +1,21 @@
+.settings_form input {
+    width: 100%;
+}
+
+.twoot_display {
+    word-wrap: break-word;
+}
+
+.twotter_profile_link {
+    text-decoration: none;
+}
+
+.twotter_profile_link:hover {
+    opacity: 0.4;
+    filter: alpha(opacity=40); /* For IE8 and earlier */
+}
+
+#twoot_character_count {
+    float: right;
+}
+

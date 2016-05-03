@@ -16,10 +16,14 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from . import views
+
 urlpatterns = [
-    url(r'^todo/', include('todo.urls', namespace="todo") ),
-    url(r'^AggroEats/', include('AggroEats.urls', namespace="AggroEats") ),
-    url(r'^twotter/', include('twotter.urls', namespace="twotter") ),
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('website.urls', namespace="website") ),
+    url(r'^$', views.index, name='index'), 
+    url(r'^login/$', views.user_login_or_register, name='login'),
+    url(r'^logout/$', views.user_logout, name='logout'),
+    url(r'^make_twoot/$', views.make_twoot, name='make_twoot'),
+    url(r'^settings/$', views.profile_settings, name='profile_settings'),
+    url(r'^(?P<username>\w+)/$', views.twotter_profile, name='twotter_profile'),
+    url(r'^', views.redirect_to_index, name='redirect_to_index'),  
 ]

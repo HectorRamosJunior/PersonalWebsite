@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'todo',
     'website',
     'AggroEats',
+    'twotter',
 ]
 
 MIDDLEWARE_CLASSES = [
