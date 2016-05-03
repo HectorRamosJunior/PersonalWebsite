@@ -7,4 +7,4 @@ http://www.hectorramosjr.com/AggroEats/
 
 http://www.hectorramosjr.com/todo/
 
-http://www.hectorramosjr.com/twotter/ (Still in production, Personal implementation of Twitter)
+http://www.hectorramosjr.com/twotter/ (Still in development, Personal implementation of Twitter)
