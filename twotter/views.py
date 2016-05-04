@@ -93,14 +93,19 @@ def delete_twoot(request):
     if request.method == "POST":
         twoot = get_object_or_404(Twoot, pk=request.POST.get("twoot_pk"))
 
-        if request.user == twoot.twotter_profile.user:
+        if request.user == twoot.twotter_profile.user or request.user.username == "admin":
             twotter_profile = twoot.twotter_profile
             twotter_profile.twoot_count -= 1
             twotter_profile.save()
-            
+
             twoot.delete()
 
-            return HttpResponse(json.dumps(""), content_type="application/json")
+            response_data = {}
+            response_data["pk"] = request.POST.get("twoot_pk")
+            response_data["twoot_count"] = twotter_profile.twoot_count
+            response_data["username"] = request.user.username
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
         else:
             print "Someone tried to delete a twoot that wasn't theirs!"
     else:
@@ -194,7 +199,7 @@ def create_profile_for_user(username):
     profile = None
 
   # Handle if the user exists in the project but not in this app
-  if user and not profile and username != "admin":
+  if user and not profile:
     profile = TwotterProfile()
 
     profile.user = User.objects.get(username=username)

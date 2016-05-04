@@ -62,8 +62,8 @@ $(document).ready(function() {
     });
 
 
-    // Toggle the dropdown menus for the twoots
-    $(".dropdown_toggle").click(function(){
+    // Toggle the dropdown menus for the twoots, listens for newly created DOM twoot elements
+    $(document).on("click", ".dropdown_toggle", function(){
         $(this).next().show();
     })
 
@@ -87,14 +87,14 @@ function make_twoot($twoot_text) {
 
         // handle a successful response
         success : function(json) {
-          console.log("AJAX Call Successful!")
-          add_twoot_to_feed(json);
-          $("#twoot_count").html('<i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> ' + json.twoot_count + ' Twoots')
+            console.log("AJAX Call Successful!")
+            add_twoot_to_feed(json);
+            $("#twoot_count").html('<i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> ' + json.twoot_count + ' Twoots')
         },
 
         // handle a non-successful response
         error : function(xhr,errmsg,err) {
-          console.log("AJAX Call Failed!")
+            console.log("AJAX Call Failed!")
         }
     });
 
@@ -113,8 +113,11 @@ function delete_twoot(twoot_pk) {
 
         // handle a successful response
         success : function(json) {
-          console.log("AJAX Call Successful!")
-          delete_twoot_from_feed(twoot_pk);
+            console.log("AJAX Call Successful!")
+            delete_twoot_from_feed(json);
+            if (json.username != "admin") {
+                $("#twoot_count").html('<i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> ' + json.twoot_count + ' Twoots')
+            }
         },
 
         // handle a non-successful response
@@ -162,10 +165,10 @@ function add_twoot_to_feed(json) {
         '<a href="' + window.location.origin + '/twotter/' + json.username + '/">' + 
         '<img src="' + json.avatar_url + '" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_profile_link" style="width:60px"></a>' +
         '<span class="w3-right w3-opacity">' + 
-        '<li class="w3-right w3-dropdown-hover">' +
-        '<i class="fa fa-caret-down" aria-hidden="true"></i>' +
+        '<li class="w3-right w3-dropdown-click">' +
+        '<i class="fa fa-caret-down dropdown_toggle" aria-hidden="true"></i>' +
         '<div class="w3-dropdown-content w3-white w3-card-4" style="right: 0;">' + 
-        '<a href="#" id="' + json.pk + '" onclick="delete_twoot(this.id)">Delete</a>' + 
+        '<a href="#" id="delete_' + json.pk + '" onclick="delete_twoot(this.id)">Delete</a>' + 
         '</div>' + 
         '</li><br>' + 
         creation_date + '</span>' +
@@ -178,8 +181,8 @@ function add_twoot_to_feed(json) {
     ).prependTo("#twoot_feed").hide().slideDown();
 };
 
-function delete_twoot_from_feed(twoot_pk) {
-    var $twoot = $("#twoot_" + twoot_pk);
+function delete_twoot_from_feed(json) {
+    var $twoot = $("#twoot_" + json.pk);
 
     $twoot.slideUp('slow', function() {
         $twoot.remove();    
