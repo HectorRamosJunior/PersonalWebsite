@@ -94,7 +94,10 @@ def delete_twoot(request):
         twoot = get_object_or_404(Twoot, pk=request.POST.get("twoot_pk"))
 
         if request.user == twoot.twotter_profile.user:
-            twoot.twotter_profile.twoot_count -= 1
+            twotter_profile = twoot.twotter_profile
+            twotter_profile.twoot_count -= 1
+            twotter_profile.save()
+            
             twoot.delete()
 
             return HttpResponse(json.dumps(""), content_type="application/json")
