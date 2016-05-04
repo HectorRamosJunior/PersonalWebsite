@@ -47,6 +47,8 @@ $(document).ready(function() {
     $twoot_text.keypress(function (event) {
         // 13 is pressing enter
         if (event.keyCode == 13) {
+            event.preventDefault();
+
             // Only press the button if the button is not disabled
             if ($twoot_button.prop("disabled") == false){
                 $twoot_button.click();
@@ -57,6 +59,21 @@ $(document).ready(function() {
     // Handle if someone pushes the button to make a twoot in the twoot form
     $twoot_button.click(function(){
         make_twoot($twoot_text)
+    });
+
+
+    // Toggle the dropdown menus for the twoots
+    $(".dropdown_toggle").click(function(){
+        $(this).next().show();
+    })
+
+    // If someone clicks outside the twoot dropdown menu, make sure all twoot menus are closed
+    $(document).bind("click", function(event){
+        if (!$(event.target).is(".dropdown_toggle")) { 
+            $(".dropdown_toggle").each(function(){
+                $(this).next().hide();
+            });
+        }
     });
 
 });
@@ -70,21 +87,44 @@ function make_twoot($twoot_text) {
 
         // handle a successful response
         success : function(json) {
-          console.log("Worked!")
+          console.log("AJAX Call Successful!")
           add_twoot_to_feed(json);
+          $("#twoot_count").html('<i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> ' + json.twoot_count + ' Twoots')
         },
 
         // handle a non-successful response
         error : function(xhr,errmsg,err) {
-          console.log("Failed!")
+          console.log("AJAX Call Failed!")
         }
     });
 
     $twoot_text.empty();
 };
 
+function delete_twoot(twoot_pk) {
+    twoot_pk = twoot_pk.replace('delete_', '');
+    console.log(twoot_pk);
+
+    // Ajax call to upload the score to the website's backend
+    $.ajax({
+        url : window.location.origin + "/twotter/delete_twoot/",
+        type : "POST", // http method
+        data : { twoot_pk : twoot_pk, csrfmiddlewaretoken: window.CSRF_TOKEN },
+
+        // handle a successful response
+        success : function(json) {
+          console.log("AJAX Call Successful!")
+          delete_twoot_from_feed(twoot_pk);
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+          console.log("AJAX Call Failed!")
+        }
+    });
+};
+
 function add_twoot_to_feed(json) {
-    console.log(json)
     date = new Date(json.creation_date)
     // May 2, 2016, 4:07 p.m
     var month_names = ["January", "February", "March", "April", "May", "June",
@@ -118,10 +158,17 @@ function add_twoot_to_feed(json) {
                         + hour + ':' + minutes + ' ' + am_or_pm;
 
     $(
-      '<div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display"><br>' +
+      '<div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_' + json.pk + '"><br>' +
         '<a href="' + window.location.origin + '/twotter/' + json.username + '/">' + 
         '<img src="' + json.avatar_url + '" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_profile_link" style="width:60px"></a>' +
-        '<span class="w3-right w3-opacity">' + creation_date + '</span>' +
+        '<span class="w3-right w3-opacity">' + 
+        '<li class="w3-right w3-dropdown-hover">' +
+        '<i class="fa fa-caret-down" aria-hidden="true"></i>' +
+        '<div class="w3-dropdown-content w3-white w3-card-4" style="right: 0;">' + 
+        '<a href="#" id="' + json.pk + '" onclick="delete_twoot(this.id)">Delete</a>' + 
+        '</div>' + 
+        '</li><br>' + 
+        creation_date + '</span>' +
         '<h4><a href="' + window.location.origin + '/twotter/' + json.username + '/" class="twotter_profile_link">' + json.display_name + '</a></h4><br>' +
         '<hr class="w3-clear">' +
         '<p>' + json.text + '</p>' +
@@ -129,4 +176,12 @@ function add_twoot_to_feed(json) {
         '<button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>' +
       '</div>'
     ).prependTo("#twoot_feed").hide().slideDown();
+};
+
+function delete_twoot_from_feed(twoot_pk) {
+    var $twoot = $("#twoot_" + twoot_pk);
+
+    $twoot.slideUp('slow', function() {
+        $twoot.remove();    
+    });
 };

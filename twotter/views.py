@@ -59,7 +59,7 @@ def profile_settings(request):
 @login_required
 def make_twoot(request):
     if request.method == "POST":
-        print "Twoot text received: "
+        print "Twoot received: "
         print request.POST.get("twoot_text")
         twoot_form = TwootForm({"text": request.POST.get("twoot_text")})
 
@@ -73,15 +73,33 @@ def make_twoot(request):
             twoot.save()
 
             response_data = {}
+            response_data["pk"] = twoot.pk
             response_data["username"] = twotter_profile.user.username
             response_data["avatar_url"] = twotter_profile.avatar_url
             response_data["creation_date"] = twoot.creation_date.isoformat()
             response_data["display_name"] = twotter_profile.display_name
             response_data["text"] = twoot.text
+            response_data["twoot_count"] = twotter_profile.twoot_count
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         else:
             print twoot_form.errors
+    else:
+        return redirect('/twotter/')
+
+
+@login_required
+def delete_twoot(request):
+    if request.method == "POST":
+        twoot = get_object_or_404(Twoot, pk=request.POST.get("twoot_pk"))
+
+        if request.user == twoot.twotter_profile.user:
+            twoot.twotter_profile.twoot_count -= 1
+            twoot.delete()
+
+            return HttpResponse(json.dumps(""), content_type="application/json")
+        else:
+            print "Someone tried to delete a twoot that wasn't theirs!"
     else:
         return redirect('/twotter/')
 

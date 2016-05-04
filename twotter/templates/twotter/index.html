@@ -27,7 +27,7 @@
          <p><i class="fa fa-pencil w3-margin-right w3-text-theme"></i> {{ twotter_profile.description }}</p>
          <p><i class="fa fa-home w3-margin-right w3-text-theme"></i> {{ twotter_profile.location }}</p>
          <p><i class="fa fa-birthday-cake w3-margin-right w3-text-theme"></i> {{ twotter_profile.birthday }}</p>
-         <p><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> {{ twotter_profile.twoot_count }} Twoots</p>
+         <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> {{ twotter_profile.twoot_count }} Twoots</p>
          <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
          <a href="{{ request.host_name }}/twotter/settings/"><button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom" style="width: 100%;">Edit Profile Settings</button></a> 
         </div>
@@ -78,9 +78,19 @@
     <!--- Twoot Display Section -->
     <div id="twoot_feed">
     {% for twoot in twoots %}
-      <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display"><br>
+      <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}"><br>
         <a href="{{ request.host_name }}/twotter/{{ twoot.twotter_profile.user.username }}/"><img src="{{ twoot.twotter_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_profile_link" style="width:60px"></a>
-        <span class="w3-right w3-opacity">{{ twoot.creation_date }}</span>
+        <span class="w3-right w3-opacity">
+        {% if user == twoot.twotter_profile.user %}
+          <li class="w3-right w3-dropdown-click">
+            <i class="fa fa-caret-down dropdown_toggle" aria-hidden="true"></i>
+            <div class="w3-dropdown-content w3-white w3-card-4" style="right: 0;">
+              <a href="#" id="delete_{{ twoot.pk }}" onclick="delete_twoot(this.id)">Delete</a>
+            </div>
+          </li>
+        {% endif %}
+          <br>
+          {{ twoot.creation_date }}</span>
         <h4><a href="{{ request.host_name }}/twotter/{{ twoot.twotter_profile.user.username }}/" class="twotter_profile_link">{{ twoot.twotter_profile.display_name }}</a></h4><br>
         <hr class="w3-clear">
         <p>{{ twoot.text }}</p>
