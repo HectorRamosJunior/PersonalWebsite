@@ -93,7 +93,7 @@
           {{ twoot.creation_date }}</span>
         <h4><a href="{{ request.host_name }}/twotter/{{ twoot.twotter_profile.user.username }}/" class="twotter_profile_link">{{ twoot.twotter_profile.display_name }}</a></h4><br>
         <hr class="w3-clear">
-        <p>{{ twoot.text }}</p>
+        <p class="twoot_text">{{ twoot.text }}</p>
         <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom"><i class="fa fa-heart"></i> Favorite</button> 
         <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
       </div>

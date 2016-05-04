@@ -76,6 +76,11 @@ $(document).ready(function() {
         }
     });
 
+    // Convert image urls within the twoot text
+    $(".twoot_text").each(function() {
+        convert_twoot_urls($(this));
+    });
+
 });
 
 function make_twoot($twoot_text) {
@@ -160,25 +165,27 @@ function add_twoot_to_feed(json) {
     var creation_date = month_names[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ', ' 
                         + hour + ':' + minutes + ' ' + am_or_pm;
 
-    $(
-      '<div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_' + json.pk + '"><br>' +
-        '<a href="' + window.location.origin + '/twotter/' + json.username + '/">' + 
-        '<img src="' + json.avatar_url + '" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_profile_link" style="width:60px"></a>' +
-        '<span class="w3-right w3-opacity">' + 
-        '<li class="w3-right w3-dropdown-click">' +
-        '<i class="fa fa-caret-down dropdown_toggle" aria-hidden="true"></i>' +
-        '<div class="w3-dropdown-content w3-white w3-card-4" style="right: 0;">' + 
-        '<a href="#" id="delete_' + json.pk + '" onclick="delete_twoot(this.id)">Delete</a>' + 
-        '</div>' + 
-        '</li><br>' + 
-        creation_date + '</span>' +
-        '<h4><a href="' + window.location.origin + '/twotter/' + json.username + '/" class="twotter_profile_link">' + json.display_name + '</a></h4><br>' +
-        '<hr class="w3-clear">' +
-        '<p>' + json.text + '</p>' +
-        '<button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom"><i class="fa fa-heart"></i> Favorite</button> ' +
-        '<button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>' +
-      '</div>'
-    ).prependTo("#twoot_feed").hide().slideDown();
+    var twoot = '<div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_' + json.pk + '"><br>' +
+                '<a href="' + window.location.origin + '/twotter/' + json.username + '/">' + 
+                '<img src="' + json.avatar_url + '" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_profile_link" style="width:60px"></a>' +
+                '<span class="w3-right w3-opacity">' + 
+                '<li class="w3-right w3-dropdown-click">' +
+                '<i class="fa fa-caret-down dropdown_toggle" aria-hidden="true"></i>' +
+                '<div class="w3-dropdown-content w3-white w3-card-4" style="right: 0;">' + 
+                '<a href="#" id="delete_' + json.pk + '" onclick="delete_twoot(this.id)">Delete</a>' + 
+                '</div>' + 
+                '</li><br>' + 
+                creation_date + '</span>' +
+                '<h4><a href="' + window.location.origin + '/twotter/' + json.username + '/" class="twotter_profile_link">' + json.display_name + '</a></h4><br>' +
+                '<hr class="w3-clear">' +
+                '<p class="twoot_text">' + json.text + '</p>' +
+                '<button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom"><i class="fa fa-heart"></i> Favorite</button> ' +
+                '<button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>' +
+                '</div>'; 
+
+    $(twoot).prependTo("#twoot_feed").hide();
+    convert_twoot_urls($("#twoot_" +  json.pk).find(".twoot_text"));
+    $("#twoot_" +  json.pk).slideDown('slow');
 };
 
 function delete_twoot_from_feed(json) {
@@ -187,4 +194,21 @@ function delete_twoot_from_feed(json) {
     $twoot.slideUp('slow', function() {
         $twoot.remove();    
     });
+};
+
+// Adds img elements of the photos contained within the given twoot
+function convert_twoot_urls(twoot) {
+    console.log(twoot)
+    var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    var photoRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]).(?:jpg|gif|png)/ig;
+
+    var url_url= $(twoot).text().match(urlRegex);
+    var url_photo= $(twoot).text().match(photoRegex);
+
+    if (url_photo != null) {
+        $.each(url_photo, function(key, value) {
+           var convert_photo='<img src="' + value + '" style="max-width:100%; max-height:100%;"><br>';
+           $(twoot).after(convert_photo)
+        });
+    }
 };
