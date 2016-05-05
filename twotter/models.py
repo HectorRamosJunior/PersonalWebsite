@@ -28,8 +28,10 @@ class TwotterProfile(models.Model):
 
 
 class Twoot(models.Model):
-    twotter_profile = models.ForeignKey(TwotterProfile, related_name='twoots')
+    twotter_profile = models.ForeignKey(TwotterProfile, related_name="twoots")
     creation_date = models.DateTimeField(auto_now_add=True)
+
+    favorites = models.ManyToManyField(TwotterProfile, related_name="favorites")
 
     text = models.CharField(max_length=140, null=False, blank=False)
 
