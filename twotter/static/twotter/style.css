@@ -20,3 +20,11 @@
     float: right;
 }
 
+iframe {
+    vertical-align: bottom;       /* iframes are inline by default */
+    background: #000;
+    border: none;         /* Reset default border */
+    height: 30vh;        /* Viewport-relative units */
+    width: 100%;
+}
+

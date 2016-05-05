@@ -198,17 +198,27 @@ function delete_twoot_from_feed(json) {
 
 // Adds img elements of the photos contained within the given twoot
 function convert_twoot_urls(twoot) {
-    console.log(twoot)
-    var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    var photoRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]).(?:jpg|gif|png)/ig;
+    var url_regex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    var photo_regex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]).(?:jpg|gif|png)/ig;
+    var youtube_regex = /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?/;
 
-    var url_url= $(twoot).text().match(urlRegex);
-    var url_photo= $(twoot).text().match(photoRegex);
+    var url_url = $(twoot).text().match(url_regex);
+    var url_photo = $(twoot).text().match(photo_regex);
+    var url_youtube = $(twoot).text().match(youtube_regex);
 
     if (url_photo != null) {
         $.each(url_photo, function(key, value) {
-           var convert_photo='<img src="' + value + '" style="max-width:100%; max-height:100%;"><br>';
-           $(twoot).after(convert_photo)
+           var convert_photo ='<img src="' + value + '" style="max-width:100%; max-height:100%;"><br><br>';
+           $(twoot).after(convert_photo);
+        });
+    }
+
+    if (url_youtube != null) {
+        $.each(url_youtube, function(key, value) {
+            if (value.length == 11) {
+                var convert_youtube = '<iframe src="//www.youtube.com/embed/' + value + '" frameborder="0" allowfullscreen></iframe><br><br>';
+                $(twoot).after(convert_youtube);
+            }
         });
     }
 };
