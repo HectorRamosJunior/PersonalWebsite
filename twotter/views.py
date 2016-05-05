@@ -112,6 +112,32 @@ def delete_twoot(request):
         return redirect('/twotter/')
 
 
+@login_required
+def favorite_twoot(request):
+    if request.method == "POST":
+        twoot = get_object_or_404(Twoot, pk=request.POST.get("twoot_pk"))
+        exists = twoot.favorites.filter(user__username=request.user.username).exists()
+
+        if not exists:
+            twoot.favorites.add(request.user.twotter_profile)
+            twoot.favorite_count += 1
+            twoot.save()
+
+            response_data = {"favorite_count": twoot.favorite_count}
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        elif exists:
+            twoot.favorites.remove(request.user.twotter_profile)
+            twoot.favorite_count -= 1
+            twoot.save()
+
+            response_data = {"favorite_count": twoot.favorite_count}
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        return redirect('/twotter/')
+
+
 def user_login_or_register(request):
     # First time visining page, present login forms
     if request.method == "GET":

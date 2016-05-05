@@ -54,13 +54,17 @@ $(document).ready(function() {
                 $twoot_button.click();
             }
         }
-     });
+     }); 
 
     // Handle if someone pushes the button to make a twoot in the twoot form
     $twoot_button.click(function(){
         make_twoot($twoot_text)
     });
 
+    // Favorite twoots, listens for newly created DOM twoot elements
+    $(document).on("click", ".favorite_button", function(){
+        favorite_twoot(this.id);
+    })
 
     // Toggle the dropdown menus for the twoots, listens for newly created DOM twoot elements
     $(document).on("click", ".dropdown_toggle", function(){
@@ -106,6 +110,34 @@ function make_twoot($twoot_text) {
     $twoot_text.empty();
 };
 
+function favorite_twoot(twoot_pk) {
+    twoot_pk = twoot_pk.replace('favorite_', '');
+    console.log(twoot_pk)
+
+    // Ajax call to upload the score to the website's backend
+    $.ajax({
+        url : window.location.origin + "/twotter/favorite_twoot/",
+        type : "POST", // http method
+        data : { twoot_pk : twoot_pk, csrfmiddlewaretoken: window.CSRF_TOKEN },
+
+        // handle a successful response
+        success : function(json) {
+            console.log("AJAX Call Successful!")
+            if (json.favorite_count > 0) {
+                $("#favorite_" + twoot_pk).html('<i class="fa fa-heart"></i> ' + json.favorite_count)
+            }
+            else if (json.favorite_count <= 0){
+                $("#favorite_" + twoot_pk).html('<i class="fa fa-heart"></i> ')
+            }
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log("AJAX Call Failed!")
+        }
+    });
+};
+
 function delete_twoot(twoot_pk) {
     twoot_pk = twoot_pk.replace('delete_', '');
     console.log(twoot_pk);
@@ -127,7 +159,7 @@ function delete_twoot(twoot_pk) {
 
         // handle a non-successful response
         error : function(xhr,errmsg,err) {
-          console.log("AJAX Call Failed!")
+            console.log("AJAX Call Failed!")
         }
     });
 };
