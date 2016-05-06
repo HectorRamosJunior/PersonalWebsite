@@ -63,7 +63,7 @@
             <div class="w3-container w3-padding">
               <h3>{{ twotter_profile.user.username }}'s Profile Page</h3><br>
             {% if not user.is_authenticated %}
-              <h6 class="w3-opacity">Guest users can't make twoots. <br><a href="login/">Please sign in or make an account.</a></h6> 
+              <h6 class="w3-opacity">Guest users can't make or favorite twoots. <br><a href="login/">Please sign in or make an account.</a></h6> 
             {% endif %}
             </div>
           </div>
@@ -90,11 +90,9 @@
           <h4><a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/" class="twotter_profile_link">{{ twoot.twotter_profile.display_name }}</a></h4><br>
           <hr class="w3-clear">
           <p class="twoot_text">{{ twoot.text }}</p>
-        {% if user.is_authenticated %}
           <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_{{ twoot.pk }}"><i class="fa fa-heart"></i>{% if twoot.favorite_count > 0 %} {{ twoot.favorite_count }} {% endif %}</button> 
           <!-- To be implemented !
           <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> -->
-        {% endif %}
         </div>
       {% endfor %}
       </div>
