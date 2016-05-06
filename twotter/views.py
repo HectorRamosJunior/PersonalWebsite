@@ -98,6 +98,12 @@ def delete_twoot(request):
             twotter_profile.twoot_count -= 1
             twotter_profile.save()
 
+            profiles_that_favorited = twoot.favorites.all()
+
+            for profile in profiles_that_favorited:
+                profile.favorite_count -= 1
+                profile.save()
+
             twoot.delete()
 
             response_data = {}
@@ -118,10 +124,15 @@ def favorite_twoot(request):
         twoot = get_object_or_404(Twoot, pk=request.POST.get("twoot_pk"))
         exists = twoot.favorites.filter(user__username=request.user.username).exists()
 
+        user_twotter_profile = request.user.twotter_profile
+
         if not exists:
             twoot.favorites.add(request.user.twotter_profile)
             twoot.favorite_count += 1
             twoot.save()
+
+            user_twotter_profile.favorite_count += 1
+            user_twotter_profile.save()
 
             response_data = {"favorite_count": twoot.favorite_count}
 
@@ -130,6 +141,9 @@ def favorite_twoot(request):
             twoot.favorites.remove(request.user.twotter_profile)
             twoot.favorite_count -= 1
             twoot.save()
+
+            user_twotter_profile.favorite_count -= 1
+            user_twotter_profile.save()
 
             response_data = {"favorite_count": twoot.favorite_count}
 
