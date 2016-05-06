@@ -24,7 +24,7 @@ iframe {
     vertical-align: bottom;       /* iframes are inline by default */
     background: #000;
     border: none;         /* Reset default border */
-    height: 40vh;        /* Viewport-relative units */
+    height: 35vh;        /* Viewport-relative units */
     width: 100%;
 }
 
