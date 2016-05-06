@@ -28,6 +28,7 @@
       <a class="w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
     </li>
     <li><a href="{{ request.host_name }}/twotter/" class="w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Twotter Feed</a></li>
+  <!-- To be implemented!
   {% if user.is_authenticated %}
     <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/settings/" class="w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a></li>
     <li class="w3-hide-small"><a href="#" class="w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a></li>
@@ -38,7 +39,7 @@
         {% endif %}
       </span></a>     
     </li>
-  {% endif %}
+  {% endif %} -->
     <li class="w3-hide-small w3-right w3-dropdown-hover">
   {% if user.is_authenticated %}
     <a href="{{ request.host_name }}/twotter/user/{{ user.username }}/" class="w3-padding-large w3-hover-white" title="My Account"><img src="{{ user.twotter_profile.avatar_url }}" class="w3-circle" style="height:25px;width:25px" alt="Avatar"></a> 

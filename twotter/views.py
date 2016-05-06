@@ -35,6 +35,12 @@ def twotter_profile(request, username):
 
     return render(request, 'twotter/profile.html', context)
 
+def view_twoot(request, twoot_pk):
+    twoot = get_object_or_404(Twoot, pk=twoot_pk)
+
+    context = {'twoot': twoot}
+
+    return render(request, 'twotter/twoot.html', context)
 
 @login_required
 def profile_settings(request):

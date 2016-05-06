@@ -91,13 +91,14 @@
           </li>
       {% endif %}
           <br>
-          {{ twoot.creation_date }}</span>
+          <a href="{{ request.host_name }}/twotter/twoot/{{ twoot.pk}}/" class="twotter_profile_link">{{ twoot.creation_date }}</a></span>
         <h4><a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/" class="twotter_profile_link">{{ twoot.twotter_profile.display_name }}</a></h4><br>
         <hr class="w3-clear">
         <p class="twoot_text">{{ twoot.text }}</p>
       {% if user.is_authenticated %}
         <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_{{ twoot.pk }}"><i class="fa fa-heart"></i>{% if twoot.favorite_count > 0 %} {{ twoot.favorite_count }} {% endif %}</button> 
-        <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
+        <!-- To be implemented!
+        <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> -->
       {% endif %}
       </div>
     {% endfor %}
@@ -105,8 +106,8 @@
       
     <!-- End Middle Column -->
     </div>
-    
-    <!-- Right Column -->
+    <!-- To be implemented!
+
     <div class="w3-col m2">
       <div class="w3-card-2 w3-round w3-white w3-center">
         <div class="w3-container">
@@ -143,8 +144,8 @@
         <p><i class="fa fa-bug w3-xxlarge"></i></p>
       </div>
       
-    <!-- End Right Column -->
     </div>
+    -->
     
   <!-- End Grid -->
   </div>

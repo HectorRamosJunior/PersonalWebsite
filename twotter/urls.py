@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^favorite_twoot/$', views.favorite_twoot, name='favorite_twoot'),
     url(r'^delete_twoot/$', views.delete_twoot, name='delete_twoot'),
     url(r'^settings/$', views.profile_settings, name='profile_settings'),
+    url(r'^twoot/(?P<twoot_pk>\w+)/$', views.view_twoot, name='view_twoot'),
     url(r'^user/(?P<username>\w+)/$', views.twotter_profile, name='twotter_profile'),
     url(r'^', views.redirect_to_index, name='redirect_to_index'),  
 ]
