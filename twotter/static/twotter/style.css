@@ -6,11 +6,11 @@
     word-wrap: break-word;
 }
 
-.twotter_profile_link {
+.twotter_link {
     text-decoration: none;
 }
 
-.twotter_profile_link:hover {
+.twotter_link:hover {
     opacity: 0.4;
     filter: alpha(opacity=40); /* For IE8 and earlier */
     text-decoration: underline;
@@ -24,7 +24,7 @@ iframe {
     vertical-align: bottom;       /* iframes are inline by default */
     background: #000;
     border: none;         /* Reset default border */
-    height: 300px;        /* Viewport-relative units */
+    height: 40vh;        /* Viewport-relative units */
     width: 100%;
 }
 
