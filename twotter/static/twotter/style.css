@@ -16,6 +16,10 @@
     text-decoration: underline;
 }
 
+.profile_toggle {
+    color: blue;
+}
+
 #twoot_character_count {
     float: right;
 }

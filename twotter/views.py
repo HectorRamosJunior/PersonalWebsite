@@ -30,10 +30,12 @@ def index(request):
 def twotter_profile(request, username):
     twotter_profile = get_object_or_404(User, username=username).twotter_profile
     twoots = twotter_profile.twoots.all().order_by('-creation_date')
+    favorites = twotter_profile.favorites.all().order_by('-creation_date')
 
-    context = {'twotter_profile': twotter_profile, 'twoots': twoots}
+    context = {'twotter_profile': twotter_profile, 'twoots': twoots, 'favorites': favorites}
 
     return render(request, 'twotter/profile.html', context)
+
 
 def view_twoot(request, twoot_pk):
     twoot = get_object_or_404(Twoot, pk=twoot_pk)
@@ -41,6 +43,7 @@ def view_twoot(request, twoot_pk):
     context = {'twoot': twoot}
 
     return render(request, 'twotter/twoot.html', context)
+
 
 @login_required
 def profile_settings(request):

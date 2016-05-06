@@ -43,6 +43,7 @@
     <div class="w3-col m8">
     
     <!-- Twoot Post Form -->
+    <!-- To be implemented!
     {% if user.is_authenticated and user == twotter_profile.user %}
       <div class="w3-row-padding">
         <div class="w3-col m12">
@@ -70,9 +71,25 @@
         </div>
       </div>
     {% endif %}
+    -->
 
-      <!--- Twoot Display Section -->
-      <div id="twoot_feed">
+      <!--- Twoots/Favorites Display Toggle -->
+      <div class="w3-row-padding">
+        <div class="w3-col m12">
+          <div class="w3-card-2 w3-round w3-white">
+            <div class="w3-container w3-padding">
+              <h3>{{ twotter_profile.user.username }}'s Profile Page</h3><br>
+              <h4 id="toggle_profile">
+                Twoots
+                <a href="#favorites" id="favorites_toggle" class="profile_toggle w3-margin-left">Favorites</a>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Twoot Display Section -->
+      <div id="twoot_feed" class="profile_twoots">
       {% for twoot in twoots %}
         <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}"><br>
           <a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/"><img src="{{ twoot.twotter_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link" style="width:60px"></a>
@@ -96,6 +113,33 @@
         </div>
       {% endfor %}
       </div>
+
+      <!-- Favorite Display Section -->
+      <div id="twoot_feed" class="profile_favorites">
+      {% for twoot in favorites %}
+        <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}"><br>
+          <a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/"><img src="{{ twoot.twotter_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link" style="width:60px"></a>
+          <span class="w3-right w3-opacity">
+          {% if user == twoot.twotter_profile.user or user.username == "admin" %}
+            <li class="w3-right w3-dropdown-click">
+              <i class="fa fa-caret-down dropdown_toggle" aria-hidden="true"></i>
+              <div class="w3-dropdown-content w3-white w3-card-4" style="right: 0;">
+                <a href="#" id="delete_{{ twoot.pk }}" onclick="delete_twoot(this.id)">Delete</a>
+              </div>
+            </li>
+          {% endif %}
+            <br>
+            <a href="{{ request.host_name }}/twotter/twoot/{{ twoot.pk}}/" class="twotter_link">{{ twoot.creation_date }}</a></span>
+          <h4><a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/" class="twotter_link">{{ twoot.twotter_profile.display_name }}</a></h4><br>
+          <hr class="w3-clear">
+          <p class="twoot_text">{{ twoot.text }}</p>
+          <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_{{ twoot.pk }}"><i class="fa fa-heart"></i>{% if twoot.favorite_count > 0 %} {{ twoot.favorite_count }} {% endif %}</button> 
+          <!-- To be implemented !
+          <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> -->
+        </div>
+      {% endfor %}
+      </div>
+
       
     <!-- End Middle Column -->
     </div>
@@ -105,5 +149,38 @@
   
 <!-- End Page Container -->
 </div>
+<script type="text/javascript">
+  $(document).ready(function() {
+      var hash = window.location.hash
+      if (hash == "#twoots") {
+        toggle_twoots();
+      }
+      else if (hash == "#favorites") {
+        toggle_favorites();
+      }
+
+      $(document).on("click", "#twoots_toggle", function() {
+         toggle_twoots();
+      });
+      
+      $(document).on("click", "#favorites_toggle", function() {
+         toggle_favorites();
+      });
+  });
+
+  function toggle_twoots() {
+    $(".profile_favorites").hide();
+    $(".profile_twoots").show();
+    $("#toggle_profile").html('Twoots ' + 
+                              '<a href="#favorites" id="favorites_toggle" class="profile_toggle w3-margin-left">Favorites</a>');
+  };
+
+  function toggle_favorites() {
+    $(".profile_twoots").hide();
+    $(".profile_favorites").show();
+    $("#toggle_profile").html('<a href="#twoots" id="twoots_toggle" class="profile_toggle w3-margin-right">Twoots</a> ' + 
+                              'Favorites');
+  };
+</script>
 <br>
 {% endblock content %}
