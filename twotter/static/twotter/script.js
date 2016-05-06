@@ -211,7 +211,7 @@ function add_twoot_to_feed(json) {
                 '<h4><a href="' + window.location.origin + '/twotter/' + json.username + '/" class="twotter_profile_link">' + json.display_name + '</a></h4><br>' +
                 '<hr class="w3-clear">' +
                 '<p class="twoot_text">' + json.text + '</p>' +
-                '<button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom"><i class="fa fa-heart"></i> Favorite</button> ' +
+                '<button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_' + json.pk + '"><i class="fa fa-heart"></i> </button> ' +
                 '<button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>' +
                 '</div>'; 
 
