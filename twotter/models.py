@@ -46,7 +46,7 @@ class Favorite(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.twotter_profile.user.username
+        return (self.twotter_profile.user.username + " favorited: " + self.twoot.text)
 
 
 class ReTwoot(models.Model):
@@ -56,4 +56,4 @@ class ReTwoot(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.twotter_profile.user.username
+        return (self.twotter_profile.user.username + " retwooted: " + self.twoot.text)
