@@ -21,7 +21,7 @@
       <div class="w3-card-2 w3-round w3-white">
         <div class="w3-container">
          <h4 class="w3-center">{{ twotter_profile.display_name }}</h4>
-         <p class="w3-center"><img src="{{ twotter_profile.avatar_url }}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <p class="w3-center"><img src="{{ twotter_profile.avatar_url }}" class="w3-circle profile_avatar" alt="Avatar"></p>
          <hr>
          <p><i class="fa fa-pencil w3-margin-right w3-text-theme"></i> {{ twotter_profile.description }}</p>
          <p><i class="fa fa-home w3-margin-right w3-text-theme"></i> {{ twotter_profile.location }}</p>
@@ -98,7 +98,7 @@
           <br>
         {% endif %}
           <br>
-          <a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/"><img src="{{ twoot.twotter_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link" style="width:60px"></a>
+          <a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/"><img src="{{ twoot.twotter_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
           <span class="w3-right w3-opacity">
           {% if user == twoot.twotter_profile.user or user.username == "admin" %}
             <li class="w3-right w3-dropdown-click">
@@ -126,7 +126,7 @@
       {% for favorite_creation_date, twoot in favorites %}
         <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}">
           <i class="fa fa-heart"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/">{{ twotter_profile.display_name }}</a> favorited this on {{ favorite_creation_date }}<br><br>
-          <a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/"><img src="{{ twoot.twotter_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link" style="width:60px"></a>
+          <a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/"><img src="{{ twoot.twotter_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
           <span class="w3-right w3-opacity">
           {% if user == twoot.twotter_profile.user or user.username == "admin" %}
             <li class="w3-right w3-dropdown-click">

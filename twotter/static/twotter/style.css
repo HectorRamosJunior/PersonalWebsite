@@ -6,6 +6,21 @@
     word-wrap: break-word;
 }
 
+.navbar_avatar {
+    height:30px;
+    width: 30px;
+}
+
+.profile_avatar {
+    height:120px;
+    width:120px;
+}
+
+.twoot_avatar {
+    height:60px;
+    width:60px
+}
+
 .twotter_link {
     text-decoration: none;
 }
