@@ -12,8 +12,7 @@ from itertools import chain
 
 import json
 
-
-# Create your views here.
+# Renders the main index page, generates twoot feed from all users
 def index(request):
     if request.user.is_authenticated():
         # Creates a Twotter Profile if the current user came from another app
@@ -45,7 +44,7 @@ def index(request):
 
     return render(request, 'twotter/index.html', context)
 
-
+# Renders user profile pages, generates twoot feed from that user and their favorites
 def twotter_profile(request, username):
     twotter_profile = get_object_or_404(User, username=username).twotter_profile
     twoots = twotter_profile.twoots.all().order_by('-creation_date')
@@ -54,7 +53,6 @@ def twotter_profile(request, username):
 
     # Merge profile twoots and rewtwoots in order of creation_date. 
     twoots = sorted( chain(twoots, retwoots), key=lambda twoot: twoot.creation_date, reverse=True)
-    print twoots
 
     profile_twoots = []
     twoot_set = set()
@@ -77,7 +75,7 @@ def twotter_profile(request, username):
 
     return render(request, 'twotter/profile.html', context)
 
-
+# Renders a page for a single given twoot, displays who retwooted and favorited on the twoot
 def view_twoot(request, twoot_pk):
     twoot = get_object_or_404(Twoot, pk=twoot_pk)
 
@@ -85,7 +83,7 @@ def view_twoot(request, twoot_pk):
 
     return render(request, 'twotter/twoot.html', context)
 
-
+# Renders the page for changing a profile's settings, employs SettingsForm for validation
 @login_required
 def profile_settings(request):
     twotter_profile = get_object_or_404(User, username=request.user.username).twotter_profile
@@ -105,7 +103,8 @@ def profile_settings(request):
 
     return render(request, 'twotter/settings.html', context)
 
-
+# Intended to be accessed via AJAX call. Creates twoot on valid POST request, returns a json object
+# containing all the data needed to dynamically generate the twoot on the page
 @login_required
 def make_twoot(request):
     if request.method == "POST":
@@ -137,7 +136,8 @@ def make_twoot(request):
     else:
         return redirect('/twotter/')
 
-
+# Intended to be accessed via AJAX call. Deletes twoot on valid POST request, returns a json object
+# which contains among others, a primary key of the twoot to be deleted dynamically from the page
 @login_required
 def delete_twoot(request):
     if request.method == "POST":
@@ -168,7 +168,7 @@ def delete_twoot(request):
     else:
         return redirect('/twotter/')
 
-
+# Intended to be accessed via AJAX call. Favorites twoot on valid POST request
 @login_required
 def favorite_twoot(request):
     if request.method == "POST":
@@ -207,7 +207,7 @@ def favorite_twoot(request):
     else:
         return redirect('/twotter/')
 
-
+# Intended to be accessed via AJAX call. Retwoots twoot on valid POST request
 @login_required
 def retwoot_twoot(request):
     if request.method == "POST":
@@ -246,7 +246,8 @@ def retwoot_twoot(request):
     else:
         return redirect('/twotter/')
 
-
+# Renders the page which handles both registration and login. On valid registration,
+# a user is added to django auth users, and a twotter profile is created for that user.
 def user_login_or_register(request):
     # First time visining page, present login forms
     if request.method == "GET":
@@ -309,19 +310,18 @@ def user_login_or_register(request):
 
             return render(request, 'twotter/login.html', context)
 
-
+# Logs out the current user and returns them back to the index page.
 @login_required
 def user_logout(request):
     logout(request)
 
     return redirect('twotter/')
 
-
+# Redirects the user bcak to the index page if the url entered is not caught by any of the parsers
 def redirect_to_index(request):
     return redirect('/twotter/')
 
-# Function that creates the profile for the user if they created an acc
-# From another app on this project
+# Creates twotter profile for django auth user if they created the user account from another app
 def create_profile_for_user(username):
   try:
     user = User.objects.get(username=username)

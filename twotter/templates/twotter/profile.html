@@ -104,7 +104,7 @@
             <li class="w3-right w3-dropdown-click">
               <i class="fa fa-caret-down dropdown_toggle" aria-hidden="true"></i>
               <div class="w3-dropdown-content w3-white w3-card-4" style="right: 0;">
-                <a href="#" id="delete_{{ twoot.pk }}" onclick="delete_twoot(this.id)">Delete</a>
+                <a href="javascript:void(0)" id="delete_{{ twoot.pk }}" onclick="delete_twoot(this.id)">Delete</a>
               </div>
             </li>
           {% endif %}
@@ -132,7 +132,7 @@
             <li class="w3-right w3-dropdown-click">
               <i class="fa fa-caret-down dropdown_toggle" aria-hidden="true"></i>
               <div class="w3-dropdown-content w3-white w3-card-4" style="right: 0;">
-                <a href="#" id="delete_{{ twoot.pk }}" onclick="delete_twoot(this.id)">Delete</a>
+                <a href="javascript:void(0)" id="delete_{{ twoot.pk }}" onclick="delete_twoot(this.id)">Delete</a>
               </div>
             </li>
           {% endif %}
@@ -158,25 +158,31 @@
   
 <!-- End Page Container -->
 </div>
+<!-- Profile specific javascript to display twoots/retwoots or favorites on page -->
 <script type="text/javascript">
   $(document).ready(function() {
       var hash = window.location.hash
-      if (hash == "#twoots") {
-        toggle_twoots();
-      }
-      else if (hash == "#favorites") {
+
+      // Load page on either favorites or twoots depending on the url hash
+      if (hash == "#favorites") {
         toggle_favorites();
       }
+      else {
+        toggle_twoots();
+      }
 
+      // Swaps page to view twoots/retwoots on twoots toggle class click
       $(document).on("click", ".twoots_toggle", function() {
          toggle_twoots();
       });
       
+      // Swaps page to view twoots/retwoots on twoots toggle class click
       $(document).on("click", ".favorites_toggle", function() {
          toggle_favorites();
       });
   });
 
+  // Switches the page to the twoots/retwoots representation by hiding favorites and showing twoots
   function toggle_twoots() {
     $(".profile_favorites").hide();
     $(".profile_twoots").show();
@@ -184,6 +190,7 @@
                               '<a href="#favorites" class="profile_toggle favorites_toggle w3-margin-left">Favorites</a>');
   };
 
+  // Switches the page to the twoots/retwoots representation by hiding twoots and showing favorites
   function toggle_favorites() {
     $(".profile_twoots").hide();
     $(".profile_favorites").show();
