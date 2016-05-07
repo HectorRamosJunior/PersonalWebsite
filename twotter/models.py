@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 
-# Create your models here.
+
 class TwotterProfile(models.Model):
     user = models.OneToOneField(User, related_name='twotter_profile')
     creation_date = models.DateTimeField(auto_now_add=True)
@@ -37,7 +37,7 @@ class Twoot(models.Model):
     text = models.CharField(max_length=140, null=False, blank=False)
 
     def __unicode__(self):
-        return self.text
+        return (self.twotter_profile.user.username + " twooted: " + self.text)
 
 
 class Favorite(models.Model):
