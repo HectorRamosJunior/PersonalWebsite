@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from .models import TwotterProfile, Twoot
+from .models import TwotterProfile, Twoot, Favorite, ReTwoot
 from .forms import UserForm, TwotterProfileForm, TwootForm, SettingsForm
 
 import json
@@ -32,7 +32,11 @@ def twotter_profile(request, username):
     twoots = twotter_profile.twoots.all().order_by('-creation_date')
     favorites = twotter_profile.favorites.all().order_by('-creation_date')
 
-    context = {'twotter_profile': twotter_profile, 'twoots': twoots, 'favorites': favorites}
+    favorite_twoots = []
+    for favorite in favorites:
+        favorite_twoots.append(favorite.twoot)
+
+    context = {'twotter_profile': twotter_profile, 'twoots': twoots, 'favorites': favorite_twoots}
 
     return render(request, 'twotter/profile.html', context)
 
@@ -107,11 +111,12 @@ def delete_twoot(request):
             twotter_profile.twoot_count -= 1
             twotter_profile.save()
 
-            profiles_that_favorited = twoot.favorites.all()
+            favorites = twoot.favorites.all()
 
-            for profile in profiles_that_favorited:
-                profile.favorite_count -= 1
-                profile.save()
+            for favorite in favorites:
+                profile_that_favorited = favorite.twotter_profile
+                profile_that_favorited.favorite_count -= 1
+                profile_that_favorited.save()
 
             twoot.delete()
 
@@ -131,12 +136,16 @@ def delete_twoot(request):
 def favorite_twoot(request):
     if request.method == "POST":
         twoot = get_object_or_404(Twoot, pk=request.POST.get("twoot_pk"))
-        exists = twoot.favorites.filter(user__username=request.user.username).exists()
+        favorite = twoot.favorites.filter(twotter_profile__user__username=request.user.username)
 
         user_twotter_profile = request.user.twotter_profile
 
-        if not exists:
-            twoot.favorites.add(request.user.twotter_profile)
+        if not favorite:
+            favorite = Favorite()
+            favorite.twoot = twoot
+            favorite.twotter_profile = user_twotter_profile
+            favorite.save()
+
             twoot.favorite_count += 1
             twoot.save()
 
@@ -146,8 +155,9 @@ def favorite_twoot(request):
             response_data = {"favorite_count": twoot.favorite_count}
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
-        elif exists:
-            twoot.favorites.remove(request.user.twotter_profile)
+        elif favorite:
+            favorite.delete()
+
             twoot.favorite_count -= 1
             twoot.save()
 

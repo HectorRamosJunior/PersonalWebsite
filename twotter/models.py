@@ -19,7 +19,6 @@ class TwotterProfile(models.Model):
     follower_count = models.IntegerField(default=0)
     following_count = models.IntegerField(default=0)
 
-    #favorites = models.ManyToManyField(Tweet)
     followers = models.ManyToManyField("self", blank=True)
     following = models.ManyToManyField("self", blank=True)
 
@@ -31,10 +30,30 @@ class Twoot(models.Model):
     twotter_profile = models.ForeignKey(TwotterProfile, related_name="twoots")
     creation_date = models.DateTimeField(auto_now_add=True)
 
-    favorites = models.ManyToManyField(TwotterProfile, related_name="favorites")
     favorite_count = models.IntegerField(default=0)
+    retwoot_count = models.IntegerField(default=0)
 
     text = models.CharField(max_length=140, null=False, blank=False)
 
     def __unicode__(self):
         return self.text
+
+
+class Favorite(models.Model):
+    twotter_profile = models.ForeignKey(TwotterProfile, related_name="favorites")
+    twoot = models.ForeignKey(Twoot, related_name="favorites")
+
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.twotter_profile.user.username
+
+
+class ReTwoot(models.Model):
+    twotter_profile = models.ForeignKey(TwotterProfile, related_name="retwoots")
+    twoot = models.ForeignKey(Twoot, related_name="retwoots")
+
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.twotter_profile.user.username
