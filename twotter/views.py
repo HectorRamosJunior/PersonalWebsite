@@ -36,7 +36,7 @@ def index(request):
         if isinstance(twoot, Twoot):
             index_twoots.append( (None, twoot) )
         elif isinstance(twoot, ReTwoot):
-            index_twoots.append( (twoot.creation_date, twoot.twoot) )
+            index_twoots.append( (twoot, twoot.twoot) )
 
     context = {'twotter_profile': twotter_profile, 'twoots': index_twoots}
 

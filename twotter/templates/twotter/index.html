@@ -79,10 +79,10 @@
 
     <!--- Twoot Display Section -->
     <div id="twoot_feed">
-    {% for retwoot_creation_date, twoot in twoots %}
+    {% for retwoot, twoot in twoots %}
       <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}">
-      {% if retwoot_creation_date %}
-          <i class="fa fa-retweet"></i> {{ twotter_profile.display_name }} retwooted this on {{ retwoot_creation_date }}
+      {% if retwoot %}
+          <i class="fa fa-retweet"></i> {{ retwoot.twotter_profile.display_name }} retwooted this on {{ retwoot.creation_date }}
           <br>
       {% endif %}
         <br>
