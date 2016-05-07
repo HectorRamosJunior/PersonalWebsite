@@ -99,6 +99,7 @@ function make_twoot($twoot_text) {
             console.log("AJAX Call Successful!")
             add_twoot_to_feed(json);
             $("#twoot_count").html('<i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> ' + json.twoot_count + ' Twoots')
+            $("#twoot_character_count").empty();
         },
 
         // handle a non-successful response
