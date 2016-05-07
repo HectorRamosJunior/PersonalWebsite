@@ -27,16 +27,19 @@ def index(request):
     retwoots = ReTwoot.objects.all().order_by('-creation_date')
 
     # Merge profile twoots and rewtwoots in order of creation_date. 
-    twoots = sorted( chain(twoots, retwoots), key=lambda twoot: twoot.creation_date, reverse=True)
+    twoots = sorted( chain(retwoots, twoots), key=lambda twoot: twoot.creation_date, reverse=True)
 
-    # Pass index_twoots in by tuple, first element containing retwoot creation date if it's a tuple
-    # The second element in the tuple always contains the twoot itself
     index_twoots = []
+    twoot_set = set()
+    # Pass index_twoots in by tuple, first element containing retwoot creation date if it's a tuple
+    # The second element in the tuple always contains the twoot itself. set used to not repeat twoots
     for twoot in twoots:
-        if isinstance(twoot, Twoot):
+        if isinstance(twoot, Twoot) and not twoot in twoot_set:
             index_twoots.append( (None, twoot) )
-        elif isinstance(twoot, ReTwoot):
+            twoot_set.add(twoot)
+        elif isinstance(twoot, ReTwoot) and not twoot.twoot in twoot_set:
             index_twoots.append( (twoot, twoot.twoot) )
+            twoot_set.add(twoot.twoot)
 
     context = {'twotter_profile': twotter_profile, 'twoots': index_twoots}
 
@@ -51,15 +54,19 @@ def twotter_profile(request, username):
 
     # Merge profile twoots and rewtwoots in order of creation_date. 
     twoots = sorted( chain(twoots, retwoots), key=lambda twoot: twoot.creation_date, reverse=True)
+    print twoots
 
-    # Pass profile_twoots in by tuple, first element containing retwoot creation date if it's a tuple
-    # The second element in the tuple always contains the twoot itself
     profile_twoots = []
+    twoot_set = set()
+    # Pass profile_twoots in by tuple, first element containing retwoot creation date if it's a tuple
+    # The second element in the tuple always contains the twoot itself. set used to not repeat twoots
     for twoot in twoots:
-        if isinstance(twoot, Twoot):
+        if isinstance(twoot, Twoot) and not twoot in twoot_set:
             profile_twoots.append( (None, twoot) )
-        elif isinstance(twoot, ReTwoot):
+            twoot_set.add(twoot)
+        elif isinstance(twoot, ReTwoot) and not twoot.twoot in twoot_set:
             profile_twoots.append( (twoot.creation_date, twoot.twoot) )
+            twoot_set.add(twoot.twoot)
 
     # Pass favorites in by tuple, first element containing favorite creation date, second the twoot favorited
     favorite_twoots = []
