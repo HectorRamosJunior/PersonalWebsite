@@ -32,9 +32,10 @@ def twotter_profile(request, username):
     twoots = twotter_profile.twoots.all().order_by('-creation_date')
     favorites = twotter_profile.favorites.all().order_by('-creation_date')
 
+    # Pass favorites in by tuple, first element containing favorite creation date, second the twoot favorited
     favorite_twoots = []
     for favorite in favorites:
-        favorite_twoots.append(favorite.twoot)
+        favorite_twoots.append( (favorite.creation_date, favorite.twoot) )
 
     context = {'twotter_profile': twotter_profile, 'twoots': twoots, 'favorites': favorite_twoots}
 
