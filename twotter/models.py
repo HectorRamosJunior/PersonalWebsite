@@ -16,6 +16,7 @@ class TwotterProfile(models.Model):
 
     twoot_count = models.IntegerField(default=0)
     favorite_count = models.IntegerField(default=0)
+    retwoot_count = models.IntegerField(default=0)
     follower_count = models.IntegerField(default=0)
     following_count = models.IntegerField(default=0)
 
@@ -31,7 +32,7 @@ class Twoot(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
 
     favorite_count = models.IntegerField(default=0)
-    #retwoot_count = models.IntegerField(default=0)
+    retwoot_count = models.IntegerField(default=0)
 
     text = models.CharField(max_length=140, null=False, blank=False)
 

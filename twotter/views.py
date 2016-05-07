@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from .models import TwotterProfile, Twoot, Favorite, ReTwoot
 from .forms import UserForm, TwotterProfileForm, TwootForm, SettingsForm
 
+from itertools import chain
+
 import json
 
 
@@ -22,7 +24,21 @@ def index(request):
         twotter_profile = None
 
     twoots = Twoot.objects.all().order_by('-creation_date')
-    context = {'twotter_profile': twotter_profile, 'twoots': twoots}
+    retwoots = ReTwoot.objects.all().order_by('-creation_date')
+
+    # Merge profile twoots and rewtwoots in order of creation_date. 
+    twoots = sorted( chain(twoots, retwoots), key=lambda twoot: twoot.creation_date, reverse=True)
+
+    # Pass index_twoots in by tuple, first element containing retwoot creation date if it's a tuple
+    # The second element in the tuple always contains the twoot itself
+    index_twoots = []
+    for twoot in twoots:
+        if isinstance(twoot, Twoot):
+            index_twoots.append( (None, twoot) )
+        elif isinstance(twoot, ReTwoot):
+            index_twoots.append( (twoot.creation_date, twoot.twoot) )
+
+    context = {'twotter_profile': twotter_profile, 'twoots': index_twoots}
 
     return render(request, 'twotter/index.html', context)
 
@@ -30,14 +46,27 @@ def index(request):
 def twotter_profile(request, username):
     twotter_profile = get_object_or_404(User, username=username).twotter_profile
     twoots = twotter_profile.twoots.all().order_by('-creation_date')
+    retwoots = twotter_profile.retwoots.all().order_by('-creation_date')
     favorites = twotter_profile.favorites.all().order_by('-creation_date')
+
+    # Merge profile twoots and rewtwoots in order of creation_date. 
+    twoots = sorted( chain(twoots, retwoots), key=lambda twoot: twoot.creation_date, reverse=True)
+
+    # Pass profile_twoots in by tuple, first element containing retwoot creation date if it's a tuple
+    # The second element in the tuple always contains the twoot itself
+    profile_twoots = []
+    for twoot in twoots:
+        if isinstance(twoot, Twoot):
+            profile_twoots.append( (None, twoot) )
+        elif isinstance(twoot, ReTwoot):
+            profile_twoots.append( (twoot.creation_date, twoot.twoot) )
 
     # Pass favorites in by tuple, first element containing favorite creation date, second the twoot favorited
     favorite_twoots = []
     for favorite in favorites:
         favorite_twoots.append( (favorite.creation_date, favorite.twoot) )
 
-    context = {'twotter_profile': twotter_profile, 'twoots': twoots, 'favorites': favorite_twoots}
+    context = {'twotter_profile': twotter_profile, 'twoots': profile_twoots, 'favorites': favorite_twoots}
 
     return render(request, 'twotter/profile.html', context)
 
@@ -166,6 +195,45 @@ def favorite_twoot(request):
             user_twotter_profile.save()
 
             response_data = {"favorite_count": twoot.favorite_count}
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        return redirect('/twotter/')
+
+
+@login_required
+def retwoot_twoot(request):
+    if request.method == "POST":
+        twoot = get_object_or_404(Twoot, pk=request.POST.get("twoot_pk"))
+        retwoot = twoot.retwoots.filter(twotter_profile__user__username=request.user.username)
+
+        user_twotter_profile = request.user.twotter_profile
+
+        if not retwoot:
+            retwoot = ReTwoot()
+            retwoot.twoot = twoot
+            retwoot.twotter_profile = user_twotter_profile
+            retwoot.save()
+
+            twoot.retwoot_count += 1
+            twoot.save()
+
+            user_twotter_profile.retwoot_count += 1
+            user_twotter_profile.save()
+
+            response_data = {"retwoot_count": twoot.retwoot_count}
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        elif retwoot:
+            retwoot.delete()
+
+            twoot.retwoot_count -= 1
+            twoot.save()
+
+            user_twotter_profile.retwoot_count -= 1
+            user_twotter_profile.save()
+
+            response_data = {"retwoot_count": twoot.retwoot_count}
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:

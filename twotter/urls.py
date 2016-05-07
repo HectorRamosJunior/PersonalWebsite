@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^make_twoot/$', views.make_twoot, name='make_twoot'),
     url(r'^favorite_twoot/$', views.favorite_twoot, name='favorite_twoot'),
+    url(r'^retwoot_twoot/$', views.retwoot_twoot, name='retwoot_twoot'),
     url(r'^delete_twoot/$', views.delete_twoot, name='delete_twoot'),
     url(r'^settings/$', views.profile_settings, name='profile_settings'),
     url(r'^twoot/(?P<twoot_pk>\w+)/$', views.view_twoot, name='view_twoot'),

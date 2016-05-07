@@ -66,6 +66,10 @@ $(document).ready(function() {
         favorite_twoot(this.id);
     })
 
+    $(document).on("click", ".retwoot_button", function(){
+        retwoot_twoot(this.id);
+    })
+
     // Toggle the dropdown menus for the twoots, listens for newly created DOM twoot elements
     $(document).on("click", ".dropdown_toggle", function(){
         $(this).next().show();
@@ -129,6 +133,34 @@ function favorite_twoot(twoot_pk) {
             }
             else if (json.favorite_count <= 0){
                 $("#favorite_" + twoot_pk).html('<i class="fa fa-heart"></i> ')
+            }
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log("AJAX Call Failed!")
+        }
+    });
+};
+
+function retwoot_twoot(twoot_pk) {
+    twoot_pk = twoot_pk.replace('retwoot_', '');
+    console.log(twoot_pk)
+
+    // Ajax call to upload the score to the website's backend
+    $.ajax({
+        url : window.location.origin + "/twotter/retwoot_twoot/",
+        type : "POST", // http method
+        data : { twoot_pk : twoot_pk, csrfmiddlewaretoken: window.CSRF_TOKEN },
+
+        // handle a successful response
+        success : function(json) {
+            console.log("AJAX Call Successful!")
+            if (json.retwoot_count > 0) {
+                $("#retwoot_" + twoot_pk).html('<i class="fa fa-retweet"></i> ' + json.retwoot_count)
+            }
+            else if (json.retwoot_count <= 0){
+                $("#retwoot_" + twoot_pk).html('<i class="fa fa-retweet"></i> ')
             }
         },
 
