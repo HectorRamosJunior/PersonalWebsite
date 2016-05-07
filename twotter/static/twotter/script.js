@@ -230,7 +230,6 @@ function add_twoot_to_feed(json) {
     var creation_date = month_names[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ', ' 
                         + hour + ':' + minutes + ' ' + am_or_pm;
 
-
     var twoot = '<div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_' + json.pk + '"><br>' +
                 '<a href="' + window.location.origin + '/twotter/' + json.username + '/">' + 
                 '<img src="' + json.avatar_url + '" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link" style="width:60px"></a>' +
@@ -245,8 +244,8 @@ function add_twoot_to_feed(json) {
                 '<h4><a href="' + window.location.origin + '/twotter/' + json.username + '/" class="twotter_link">' + json.display_name + '</a></h4><br>' +
                 '<hr class="w3-clear">' +
                 '<p class="twoot_text">' + json.text + '</p>' +
+                '<button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom retwoot_button" id="retwoot_' + json.pk + '"><i class="fa fa-retweet"></i> </button> ' +
                 '<button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_' + json.pk + '"><i class="fa fa-heart"></i> </button> ' +
-                '<button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>' +
                 '</div>'; 
 
     $(twoot).prependTo("#twoot_feed").hide();

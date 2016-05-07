@@ -94,7 +94,7 @@
       {% for retwoot_creation_date, twoot in twoots %}
         <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}">
         {% if retwoot_creation_date %}
-          <i class="fa fa-retweet"></i> {{ twotter_profile.display_name }} retwooted this on {{ retwoot_creation_date }}
+          <i class="fa fa-retweet"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/">{{ twotter_profile.display_name }}</a> retwooted this on {{ retwoot_creation_date }}
           <br>
         {% endif %}
           <br>
