@@ -72,4 +72,4 @@ class Notification(models.Model):
 
     def __unicode__(self):
         return (self.notifier_profile.user.username + " " + self.action + " " + 
-                self.twotter_profile.display_name + "'s twoot: " + self.twoot.text)
+                self.twotter_profile.user.username + "'s twoot: " + self.twoot.text)

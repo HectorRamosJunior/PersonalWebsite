@@ -2,13 +2,7 @@
 {% extends "twotter/base.html" %}
 {% load staticfiles %}
 
-{% block title %}
-  {% if twotter_profile %}
-    {{ twotter_profile.display_name }}'s Profile
-  {% else %}
-    404 Profile Page
-  {% endif %}
-{% endblock title %}
+{% block title %}{{ twotter_profile.display_name }}'s Profile{% endblock title %}
 
 {% block content %}
 <!-- Page Container -->
