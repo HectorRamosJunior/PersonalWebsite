@@ -201,6 +201,7 @@ def favorite_twoot(request):
         favorite = twoot.favorites.filter(twotter_profile__user__username=request.user.username)
 
         user_twotter_profile = request.user.twotter_profile
+        notified_twotter_profile = twoot.twotter_profile
 
         if not favorite:
             favorite = Favorite()
@@ -208,21 +209,20 @@ def favorite_twoot(request):
             favorite.twotter_profile = user_twotter_profile
             favorite.save()
 
-            notification = Notification()
-            notification.twotter_profile = twoot.twotter_profile
-            notification.notifier_profile = request.user.twotter_profile
-            notification.twoot = twoot
-            notification.action = "favorited"
-            notification.save()
+            # Do not allow users to notify themselves
+            if notified_twotter_profile != user_twotter_profile:
+                notified_twotter_profile.notification_count += 1
+                notified_twotter_profile.save()
+
+                notification = Notification()
+                notification.twotter_profile = twoot.twotter_profile
+                notification.notifier_profile = request.user.twotter_profile
+                notification.twoot = twoot
+                notification.action = "favorited"
+                notification.save()
 
             twoot.favorite_count += 1
             twoot.save()
-
-            notified_twotter_profile = twoot.twotter_profile
-            # Do not allow users to notify themselves
-            if not notified_twotter_profile is user_twotter_profile:
-                notified_twotter_profile.notification_count += 1
-                notified_twotter_profile.save()
 
             user_twotter_profile.favorite_count += 1
             user_twotter_profile.save()
@@ -261,21 +261,20 @@ def retwoot_twoot(request):
             retwoot.twotter_profile = user_twotter_profile
             retwoot.save()
 
-            notification = Notification()
-            notification.twotter_profile = twoot.twotter_profile
-            notification.notifier_profile = request.user.twotter_profile
-            notification.twoot = twoot
-            notification.action = "retwooted"
-            notification.save()
+            # Do not allow users to notify themselves
+            if notified_twotter_profile != user_twotter_profile:
+                notified_twotter_profile.notification_count += 1
+                notified_twotter_profile.save()
+
+                notification = Notification()
+                notification.twotter_profile = twoot.twotter_profile
+                notification.notifier_profile = request.user.twotter_profile
+                notification.twoot = twoot
+                notification.action = "retwooted"
+                notification.save()
 
             twoot.retwoot_count += 1
             twoot.save()
-
-            notified_twotter_profile = twoot.twotter_profile
-            # Do not allow users to notify themselves
-            if not notified_twotter_profile is user_twotter_profile:
-                notified_twotter_profile.notification_count += 1
-                notified_twotter_profile.save()
 
             user_twotter_profile.retwoot_count += 1
             user_twotter_profile.save()

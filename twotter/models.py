@@ -71,4 +71,5 @@ class Notification(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return (self.notifier_profile.user.username + " " + self.action + " " + self.twoot.text)
+        return (self.notifier_profile.user.username + " " + self.action + " " + 
+                self.twotter_profile.display_name + "'s twoot: " + self.twoot.text)
