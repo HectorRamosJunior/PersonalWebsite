@@ -72,7 +72,7 @@
                 <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/" >{{ notification.notifier_profile.display_name }}</a>
                 {{ notification.action }} your 
                 <a href="{{ request.host_name }}/twotter/twoot/{{ notification.twoot.pk }}/" >twoot</a> on {{ notification.creation_date }}!
-              </p>
+              </p><br>
             {% endfor %}
             </div>
           </div>
