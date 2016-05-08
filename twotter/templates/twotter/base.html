@@ -31,15 +31,17 @@
   {% if user.is_authenticated %}
     <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/user/{{ user.username }}/" class="w3-padding-large w3-hover-white" title="Account Profile"><i class="fa fa-user"></i></a></li>
     <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/search/" class="w3-padding-large w3-hover-white" title="Twotter Search"><i class="fa fa-search"></i></a></li>
-    <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/notifications/" class="w3-padding-large w3-hover-white" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">
+    <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/notifications/" class="w3-padding-large w3-hover-white" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-red">
       {% if user.twotter_profile.notification_count > 0 %}
         {{ user.twotter_profile.notification_count }}
       {% endif %}
       </span></a>     
     </li>
-  <!-- To be implemented!
-    <li class="w3-hide-small"><a href="#" class="w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a></li>
-  -->
+    <!-- To be implemented!
+      <li class="w3-hide-small"><a href="#" class="w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a></li>
+    -->
+  {% else %}
+    <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/search/" class="w3-padding-large w3-hover-white" title="Twotter Search"><i class="fa fa-search"></i></a></li>   
   {% endif %}
     <li class="w3-hide-small w3-right w3-dropdown-hover">
   {% if user.is_authenticated %}
@@ -62,10 +64,12 @@
     {% if user.is_authenticated %}
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/user/{{ user.username }}/">Profile</a></li>
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/notifications/">{{ user.twotter_profile.notification_count }} New Notifications</a></li>
+      <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/search/">Twotter Search</a></li>
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/settings/">Settings</a></li>
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/logout/">Logout</a></li>
     {% else %}
-      <li><a href="{{ request.host_name }}/twotter/login/">Sign In/Up</a></li>
+      <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/login/">Sign In/Up</a></li>
+      <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/search/">Twotter Search</a></li>
     {% endif %}
     </ul>
   </div>
