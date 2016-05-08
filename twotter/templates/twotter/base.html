@@ -61,6 +61,7 @@
     <ul class="w3-navbar w3-left-align w3-large w3-theme">
     {% if user.is_authenticated %}
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/user/{{ user.username }}/">Profile</a></li>
+      <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/notifications/">{{ user.twotter_profile.notification_count }} New Notifications</a></li>
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/settings/">Settings</a></li>
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/logout/">Logout</a></li>
     {% else %}
