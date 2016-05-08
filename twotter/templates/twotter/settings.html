@@ -26,9 +26,9 @@
          <p><i class="fa fa-pencil w3-margin-right w3-text-theme"></i> {{ twotter_profile.description }}</p>
          <p><i class="fa fa-home w3-margin-right w3-text-theme"></i> {{ twotter_profile.location }}</p>
          <p><i class="fa fa-birthday-cake w3-margin-right w3-text-theme"></i> {{ twotter_profile.birthday }}</p>
-         <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> <a href="#twoots" class="twotter_link twoots_toggle">{{ twotter_profile.twoot_count }} Twoots</a></p>
-         <p id="retwoot_count"><i class="fa fa-retweet w3-margin-right w3-text-theme"></i> <a href="#twoots" class="twotter_link twoots_toggle">{{ twotter_profile.retwoot_count }} Retwoots</a></p>
-         <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i> <a href="#favorites" class="twotter_link favorites_toggle">{{ twotter_profile.favorite_count }} Favorites</a></p>
+         <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.twoot_count }} Twoots</a></p>
+         <p id="retwoot_count"><i class="fa fa-retweet w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.retwoot_count }} Retwoots</a></p>
+         <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#favorites" class="twotter_link">{{ twotter_profile.favorite_count }} Favorites</a></p>
          <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
         </div>
       </div>
