@@ -22,8 +22,8 @@ $(document).ready(function() {
     });
 
     // Handles Twoot form character count and disables twoot button if character count is invalid
-    $twoot_text.bind("DOMSubtreeModified", function(){
-        var characters_left = 140 - $twoot_text.text().length
+    $twoot_text.bind("propertychange change click keyup input paste", function(){
+        var characters_left = 140 - this.value.length
 
         // Handle if incorrect number of characters
         if (characters_left < 0 || characters_left === 140){
@@ -99,7 +99,7 @@ function make_twoot($twoot_text) {
     $.ajax({
         url : window.location.origin + "/twotter/make_twoot/",
         type : "POST", // http method
-        data : { twoot_text : $twoot_text.text(), csrfmiddlewaretoken: window.CSRF_TOKEN },
+        data : { twoot_text : $twoot_text.val(), csrfmiddlewaretoken: window.CSRF_TOKEN },
 
         // handle a successful response
         success : function(json) {
@@ -115,14 +115,14 @@ function make_twoot($twoot_text) {
         }
     });
 
-    $twoot_text.empty();
+    // Empty input field text
+    $twoot_text.val("");
 };
 
 // Makes an AJAX call to favorite/unfavorite the given twoot on the page.
 // If successful, the twoot's favorite button number will change dynamically 
 function favorite_twoot(twoot_pk) {
     twoot_pk = twoot_pk.replace('favorite_', '');
-    console.log(twoot_pk)
 
     // Ajax call to upload the score to the website's backend
     $.ajax({
@@ -152,7 +152,6 @@ function favorite_twoot(twoot_pk) {
 // If successful, the twoot's retwoot button number will change dynamically
 function retwoot_twoot(twoot_pk) {
     twoot_pk = twoot_pk.replace('retwoot_', '');
-    console.log(twoot_pk)
 
     // Ajax call to upload the score to the website's backend
     $.ajax({
@@ -182,8 +181,7 @@ function retwoot_twoot(twoot_pk) {
 // If successful, the twoot will slide up and be deleted from the user's feed dynamically
 function delete_twoot(twoot_pk) {
     twoot_pk = twoot_pk.replace('delete_', '');
-    console.log(twoot_pk);
-
+    
     // Ajax call to upload the score to the website's backend
     $.ajax({
         url : window.location.origin + "/twotter/delete_twoot/",
@@ -254,14 +252,16 @@ function add_twoot_to_feed(json) {
                 '<a href="' +  window.location.origin + '/twotter/twoot/' + json.pk + '/" class="twotter_link">' +  creation_date + '</a></span>' + 
                 '<h4><a href="' + window.location.origin + '/twotter/' + json.username + '/" class="twotter_link">' + json.display_name + '</a></h4><br>' +
                 '<hr class="w3-clear">' +
-                '<p class="twoot_text">' + json.text + '</p>' +
+                '<p class="twoot_text"></p>' +
                 '<button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom retwoot_button" id="retwoot_' + json.pk + '"><i class="fa fa-retweet"></i> </button> ' +
                 '<button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_' + json.pk + '"><i class="fa fa-heart"></i> </button> ' +
                 '</div>'; 
 
     $(twoot).prependTo("#twoot_feed").hide();
-    convert_twoot_urls($("#twoot_" +  json.pk).find(".twoot_text"));
-    $("#twoot_" +  json.pk).slideDown('slow');
+
+    $("#twoot_" + json.pk).find(".twoot_text").text(json.text);     // Avoid HTML injection!
+    convert_twoot_urls($("#twoot_" +  json.pk).find(".twoot_text"));    // Check for image/youtube links
+    $("#twoot_" +  json.pk).slideDown('slow');                      // Finally, add twoot to feed dynamically!
 };
 
 // Dynamically removes the new twoot from delete_twoot AJAX's call to the feed if successful.

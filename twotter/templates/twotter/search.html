@@ -53,8 +53,7 @@
           <div class="w3-card-2 w3-round w3-white">
             <div class="w3-container w3-padding">
               <h3>Twotter Search Page</h3><br>
-              <input type="text" id="search_input" placeholder="Enter your search here!" maxlength="140" class="w3-border w3-padding input_field" autofocus></input>
-              <br><br>
+              <input type="text" id="search_input" placeholder="Enter your search here!" maxlength="140" class="w3-border w3-padding w3-margin-bottom input_field" autofocus></input>
               <a href="" id="search_link"><button class="w3-btn w3-theme" id="search_button" disabled><i class="fa fa-search"></i> Search!</button></a>
             </div>
           </div>
@@ -153,7 +152,6 @@
 
       // Only enable the search button if the input field is at least 1 character long
       $("#search_input").bind("propertychange change click keyup input paste", function(){
-        console.log(this.value);
         // Change the search button link to the input field's new text 
         $("#search_link").attr("href", window.location.origin + "/twotter/search/" + this.value + "/");
 
