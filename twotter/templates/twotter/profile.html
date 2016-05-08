@@ -74,17 +74,17 @@
           <div class="w3-card-2 w3-round w3-white">
             <div class="w3-container w3-padding">
               <h3>{{ twotter_profile.user.username }}'s Profile Page</h3><br>
-              <h4 id="toggle_profile">
-                Twoots
-                <a href="#favorites" class="profile_toggle favorites_toggle w3-margin-left">Favorites</a>
-              </h4>
+              <h6 id="toggle_links">
+                <a href="#twoots"><button type="button" class="w3-btn w3-theme-d1 twoots_toggle" id="profile_twoots_button">Twoots</button></a>
+                <a href="#favorites"><button type="button" class="w3-btn w3-theme-d1 favorites_toggle" id="profile_favorites_button">Favorites</button></a>
+              </h6>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Twoot Display Section -->
-      <div id="twoot_feed" class="profile_twoots">
+      <div id="profile_twoots">
       {% for retwoot_creation_date, twoot in twoots %}
         <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}">
         {% if retwoot_creation_date %}
@@ -116,7 +116,7 @@
       </div>
 
       <!-- Favorite Display Section -->
-      <div id="twoot_feed" class="profile_favorites">
+      <div id="profile_favorites">
       {% for favorite_creation_date, twoot in favorites %}
         <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}">
           <i class="fa fa-heart"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/">{{ twotter_profile.display_name }}</a> favorited this on {{ favorite_creation_date }}<br><br>
@@ -158,38 +158,44 @@
       var hash = window.location.hash
 
       // Load page on either favorites or twoots depending on the url hash
-      if (hash == "#favorites") {
+      if (hash == "#twoots") {
+        toggle_twoots();
+      }
+      else if (hash == "#favorites") {
         toggle_favorites();
       }
       else {
+        window.location.hash = "";
         toggle_twoots();
       }
 
       // Swaps page to view twoots/retwoots on twoots toggle class click
-      $(document).on("click", ".twoots_toggle", function() {
+      $(".twoots_toggle").click( function() {
          toggle_twoots();
       });
       
       // Swaps page to view twoots/retwoots on twoots toggle class click
-      $(document).on("click", ".favorites_toggle", function() {
+      $(".favorites_toggle").click( function() {
          toggle_favorites();
       });
   });
 
   // Switches the page to the twoots/retwoots representation by hiding favorites and showing twoots
   function toggle_twoots() {
-    $(".profile_favorites").hide();
-    $(".profile_twoots").show();
-    $("#toggle_profile").html('Twoots ' + 
-                              '<a href="#favorites" class="profile_toggle favorites_toggle w3-margin-left">Favorites</a>');
+    $("#profile_favorites").hide();
+    $("#profile_twoots").show();
+
+    $("#profile_favorites_button").prop("disabled", false);
+    $("#profile_twoots_button").prop("disabled", true);
   };
 
   // Switches the page to the twoots/retwoots representation by hiding twoots and showing favorites
   function toggle_favorites() {
-    $(".profile_twoots").hide();
-    $(".profile_favorites").show();
-    $("#toggle_profile").html('<a href="#twoots" class="profile_toggle twoots_toggle w3-margin-right">Twoots</a> ' + 
-                              'Favorites');
+    $("#profile_twoots").hide();
+    $("#profile_favorites").show();
+
+    $("#profile_twoots_button").prop("disabled", false);
+    $("#profile_favorites_button").prop("disabled", true);
   };
 </script>
 <br>

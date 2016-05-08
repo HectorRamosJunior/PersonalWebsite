@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^retwoot_twoot/$', views.retwoot_twoot, name='retwoot_twoot'),
     url(r'^delete_twoot/$', views.delete_twoot, name='delete_twoot'),
     url(r'^twoot/(?P<twoot_pk>\w+)/$', views.view_twoot, name='view_twoot'),
-    url(r'^user/(?P<username>\w+)/$', views.twotter_profile, name='twotter_profile'),
+    url(r'^user/(?P<username>.+)/$', views.twotter_profile, name='twotter_profile'),
+    url(r'^search/(?P<search>.+)/$', views.twotter_search, name='twotter_search'), 
+    url(r'^search/$', views.twotter_search, name='twotter_search'),
     url(r'^', views.redirect_to_index, name='redirect_to_index'),  
 ]

@@ -8,9 +8,9 @@ from django.contrib.auth.decorators import login_required
 from .models import TwotterProfile, Twoot, Favorite, ReTwoot, Notification
 from .forms import UserForm, TwotterProfileForm, TwootForm, SettingsForm
 
-from itertools import chain
-
-import json
+from django.db.models import Q # Enables OR statements in filters
+from itertools import chain # Enables combining two query sets of different models
+import json # For the AJAX calls on twotter
 
 # Renders the main index page, generates twoot feed from all users
 def index(request):
@@ -296,6 +296,38 @@ def retwoot_twoot(request):
             return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         return redirect('/twotter/')
+
+# Renders the page containing the search request
+def twotter_search(request, search=None):
+    if request.user.is_authenticated():
+        # Creates a Twotter Profile if the current user came from another app
+        create_profile_for_user(str(request.user.username))
+
+        twotter_profile = User.objects.get(username=request.user.username).twotter_profile
+    else:
+        twotter_profile = None
+
+    # If a search wasn't conducted yet (checked via url) render base search page
+    if search == None:
+        return render(request, 'twotter/search.html', {'twotter_profile': twotter_profile})
+
+    # Handle spaces in search requests
+    search = search.replace("%20", " ")
+
+    # Get profiles and usernames that contain the search term
+    profile_results = TwotterProfile.objects.filter(
+                                                    Q(user__username__contains=search) 
+                                                    | # Merges the two queries
+                                                    Q(display_name__contains=search)
+                                                    ).order_by("-creation_date")
+    # Get all twoots that contain the search term
+    twoot_results = Twoot.objects.filter(text__contains=search).order_by("-creation_date")
+
+
+    context = {'twotter_profile': twotter_profile, 'search': search, 
+                'profile_results': profile_results, 'twoot_results': twoot_results}
+
+    return render(request, 'twotter/search.html', context)
 
 # Renders the page which handles both registration and login. On valid registration,
 # a user is added to django auth users, and a twotter profile is created for that user.

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+{% extends "twotter/base.html" %}
+{% load staticfiles %}
+
+{% block title %}{{ twotter_profile.display_name }}'s Notifications{% endblock title %}
+
+{% block content %}
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+  <!-- The Grid -->
+  <div class="w3-row">
+    <!-- Left Column -->
+    <div class="w3-col m4">
+      <!-- Profile -->
+    {% if twotter_profile %}
+      <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+         <h4 class="w3-center">{{ twotter_profile.display_name }}</h4>
+         <p class="w3-center"><img src="{{ twotter_profile.avatar_url }}" class="w3-circle profile_avatar" alt="Avatar"></p>
+         <hr>
+         <p><i class="fa fa-pencil w3-margin-right w3-text-theme"></i> {{ twotter_profile.description }}</p>
+         <p><i class="fa fa-home w3-margin-right w3-text-theme"></i> {{ twotter_profile.location }}</p>
+         <p><i class="fa fa-birthday-cake w3-margin-right w3-text-theme"></i> {{ twotter_profile.birthday }}</p>
+         <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.twoot_count }} Twoots</a></p>
+         <p id="retwoot_count"><i class="fa fa-retweet w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.retwoot_count }} Retwoots</a></p>
+         <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#favorites" class="twotter_link">{{ twotter_profile.favorite_count }} Favorites</a></p>
+         <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
+         <a href="{{ request.host_name }}/twotter/settings/"><button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom" style="width: 100%;">Edit Profile Settings</button></a> 
+        </div>
+      </div>
+      <br>
+    {% else %}
+      <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+         <h4 class="w3-center">Guest</h4>
+         <p class="w3-center"><img src="http://i.imgur.com/3iMO8An.png" class="w3-circle profile_avatar" alt="Avatar"></p>
+         <hr>
+        </div>
+      </div>
+      <br>
+    {% endif %}
+
+    <!-- End Left Column -->
+    </div>
+    
+    <!-- Middle Column -->
+    <div class="w3-col m8">
+
+      <!-- Search Page Header -->
+    {% if not search %}
+      <div class="w3-row-padding">
+        <div class="w3-col m12">
+          <div class="w3-card-2 w3-round w3-white">
+            <div class="w3-container w3-padding">
+              <h3>Twotter Search Page</h3><br>
+              <input type="text" id="search_input" placeholder="Enter your search here!" maxlength="140" class="w3-border w3-padding input_field" autofocus></input>
+              <br><br>
+              <a href="" id="search_link"><button class="w3-btn w3-theme" id="search_button" disabled><i class="fa fa-search"></i> Search!</button></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+      <!-- Search Display Toggle -->
+    {% if search %}
+      <div class="w3-row-padding">
+        <div class="w3-col m12">
+          <div class="w3-card-2 w3-round w3-white">
+            <div class="w3-container w3-padding">
+              <h3>Results for "{{ search }}"</h3><br>
+            {% if not profile_results and not twoot_results %}
+              <p>No results for "{{ search }}"!</p>
+            {% else %}
+              <h6 id="toggle_links">
+                <a href="#users"><button type="button" class="w3-btn w3-theme-d1" id="profile_results_button" disabled>Profile Results</button></a>
+                <a href="#twoots"><button type="button" class="w3-btn w3-theme-d1" id="twoot_results_button">Twoot Results</button></a>
+              </h6>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+      <!-- Profile Results Display Section -->
+      <div id="profile_results">
+      {% for profile in profile_results %}
+        <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="user_{{ profile.pk }}">
+          <br>
+          <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/"><img src="{{ profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
+          <span class="w3-right w3-opacity">
+            <br>
+            <a href="#" class="twotter_link">Created on {{ profile.creation_date }}</a></span>
+          <h4><a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/" class="twotter_link">{{ profile.display_name }}</a></h4>
+          <hr class="w3-clear">
+        </div>
+      {% endfor %}
+      </div>
+
+      <!-- Twoot Results Display Section -->
+      <div id="twoot_results">
+      {% for twoot in twoot_results %}
+        <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}">
+          <br>
+          <a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/"><img src="{{ twoot.twotter_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
+          <span class="w3-right w3-opacity">
+          {% if user == twoot.twotter_profile.user or user.username == "admin" %}
+            <li class="w3-right w3-dropdown-click">
+              <i class="fa fa-caret-down dropdown_toggle" aria-hidden="true"></i>
+              <div class="w3-dropdown-content w3-white w3-card-4" style="right: 0;">
+                <a href="javascript:void(0)" id="delete_{{ twoot.pk }}" onclick="delete_twoot(this.id)">Delete</a>
+              </div>
+            </li>
+          {% endif %}
+            <br>
+            <a href="{{ request.host_name }}/twotter/twoot/{{ twoot.pk}}/" class="twotter_link">{{ twoot.creation_date }}</a></span>
+          <h4><a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/" class="twotter_link">{{ twoot.twotter_profile.display_name }}</a></h4>
+          <hr class="w3-clear">
+          <p class="twoot_text">{{ twoot.text }}</p>
+          <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom retwoot_button" id="retwoot_{{ twoot.pk }}"><i class="fa fa-retweet"></i>{% if twoot.retwoot_count > 0 %} {{ twoot.retwoot_count }} {% endif %}</button>
+          <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_{{ twoot.pk }}"><i class="fa fa-heart"></i>{% if twoot.favorite_count > 0 %} {{ twoot.favorite_count }} {% endif %}</button> 
+          <!-- To be implemented !
+          <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> -->
+        </div>
+      {% endfor %}
+      </div>
+      
+    <!-- End Middle Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+<!-- End Page Container -->
+</div>
+<!-- Search specific javascript to display profile_results/twoot_results on the search results page -->
+<script type="text/javascript">
+  $(document).ready(function() {
+      var hash = window.location.hash
+
+      // Load page on either favorites or twoots depending on the url hash
+      if (hash == "#twoots") {
+        toggle_twoots();
+      }
+      else if (hash == "#users") {
+        toggle_users();
+      }
+      else {
+        window.location.hash = "";
+        toggle_users();
+      }
+
+      // Only enable the search button if the input field is at least 1 character long
+      $("#search_input").bind("propertychange change click keyup input paste", function(){
+        console.log(this.value);
+        // Change the search button link to the input field's new text 
+        $("#search_link").attr("href", window.location.origin + "/twotter/search/" + this.value + "/");
+
+        if (this.value.length > 0) {
+          $("#search_button").prop("disabled", false);
+        }
+        else {
+          $("#search_button").prop("disabled", true);
+        }
+      });
+
+      // Handle if someone presses enter in the search box
+      $("#search_input").keypress(function (event) {
+          // 13 is pressing enter
+          if (event.keyCode == 13) {
+              event.preventDefault();
+
+              // Only press the button if the button is not disabled
+              if ($("#search_button").prop("disabled") == false){
+                  $("#search_button").click();
+              }
+          }
+       }); 
+
+      // Toggles page to view user search results
+      $("#profile_results_button").click( function() {
+        toggle_users();
+      });
+      
+      // Toggles page to view twoot search results
+      $("#twoot_results_button").click( function() {
+        toggle_twoots();
+      });
+
+  });
+
+  // Switches the page to the twoots/retwoots representation by hiding favorites and showing twoots
+  function toggle_users() {
+    $("#twoot_results").hide();
+    $("#profile_results").show();
+
+    $("#twoot_results_button").prop("disabled", false);
+    $("#profile_results_button").prop("disabled", true);
+  };
+
+  // Switches the page to the twoots/retwoots representation by hiding twoots and showing favorites
+  function toggle_twoots() {
+    $("#profile_results").hide();
+    $("#twoot_results").show();
+
+    $("#profile_results_button").prop("disabled", false);
+    $("#twoot_results_button").prop("disabled", true);
+  };
+</script>
+<br>
+{% endblock content %}
