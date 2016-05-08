@@ -107,16 +107,17 @@ def profile_settings(request):
 @login_required
 def profile_notifications(request):
     twotter_profile = get_object_or_404(User, username=request.user.username).twotter_profile
-    notification_count = twotter_profile.notification_count
+    new_notification_count = twotter_profile.notification_count
 
-    new_notifications = twotter_profile.notifications.all().order_by('-creation_date')[:notification_count]
-    old_notifications = twotter_profile.notifications.all().order_by('-creation_date')[notification_count:]
+    notifications = twotter_profile.notifications.all().order_by('-creation_date')
+    new_notifications = notifications[:new_notification_count]
+    old_notifications = notifications[new_notification_count:]
 
     twotter_profile.notification_count = 0
     twotter_profile.save()
 
-    context = {'twotter_profile': twotter_profile, 'new_notifications': new_notifications, 
-                'old_notifications': old_notifications}
+    context = {'twotter_profile': twotter_profile, 'notification_count': len(notifications),
+            'new_notifications': new_notifications, 'old_notifications': old_notifications}
 
     return render(request, 'twotter/notifications.html', context)
 
