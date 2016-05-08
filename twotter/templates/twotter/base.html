@@ -29,16 +29,17 @@
     </li>
     <li><a href="{{ request.host_name }}/twotter/" class="w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Twotter Feed</a></li>
   {% if user.is_authenticated %}
-    <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/user/{{ user.username }}/" class="w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a></li>
+    <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/user/{{ user.username }}/" class="w3-padding-large w3-hover-white" title="Account Profile"><i class="fa fa-user"></i></a></li>
+    <li class="w3-hide-small w3-dropdown-hover">
+      <a href="{{ request.host_name }}/twotter/notifications/" class="w3-padding-large w3-hover-white" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">
+      {% if user.twotter_profile.notification_count > 0 %}
+        {{ user.twotter_profile.notification_count }}
+      {% endif %}
+      </span></a>     
+    </li>
   <!-- To be implemented!
     <li class="w3-hide-small"><a href="#" class="w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a></li>
-    <li class="w3-hide-small w3-dropdown-hover">
-      <a href="#" class="w3-padding-large w3-hover-white" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">
-        {% if notification_number > 0 %}
-          {{ notification_number }}
-        {% endif %}
-      </span></a>     
-    </li> -->
+  -->
   {% endif %}
     <li class="w3-hide-small w3-right w3-dropdown-hover">
   {% if user.is_authenticated %}

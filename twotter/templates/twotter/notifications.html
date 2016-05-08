@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+{% extends "twotter/base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+  {% if twotter_profile %}
+    {{ twotter_profile.display_name }}'s Notifications
+  {% else %}
+    404 Profile Page
+  {% endif %}
+{% endblock title %}
+
+{% block content %}
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+  <!-- The Grid -->
+  <div class="w3-row">
+    <!-- Left Column -->
+    <div class="w3-col m4">
+      <!-- Profile -->
+      <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+         <h4 class="w3-center">{{ twotter_profile.display_name }}</h4>
+         <p class="w3-center"><img src="{{ twotter_profile.avatar_url }}" class="w3-circle profile_avatar" alt="Avatar"></p>
+         <hr>
+         <p><i class="fa fa-pencil w3-margin-right w3-text-theme"></i> {{ twotter_profile.description }}</p>
+         <p><i class="fa fa-home w3-margin-right w3-text-theme"></i> {{ twotter_profile.location }}</p>
+         <p><i class="fa fa-birthday-cake w3-margin-right w3-text-theme"></i> {{ twotter_profile.birthday }}</p>
+         <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> <a href="#twoots" class="twotter_link twoots_toggle">{{ twotter_profile.twoot_count }} Twoots</a></p>
+         <p id="retwoot_count"><i class="fa fa-retweet w3-margin-right w3-text-theme"></i> <a href="#twoots" class="twotter_link twoots_toggle">{{ twotter_profile.retwoot_count }} Retwoots</a></p>
+         <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i> <a href="#favorites" class="twotter_link favorites_toggle">{{ twotter_profile.favorite_count }} Favorites</a></p>
+         <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
+       {% if user == twotter_profile.user %}
+         <a href="{{ request.host_name }}/twotter/settings/"><button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom" style="width: 100%;">Edit Profile Settings</button></a>
+       {% endif %}
+        </div>
+      </div>
+      <br>
+
+    <!-- End Left Column -->
+    </div>
+    
+    <!-- Middle Column -->
+    <div class="w3-col m8">
+
+      <!-- Notification Page Header -->
+      <div class="w3-row-padding">
+        <div class="w3-col m12">
+          <div class="w3-card-2 w3-round w3-white">
+            <div class="w3-container w3-padding">
+              <h3>Your Notifications</h3>
+            {% if not new_notifications and not old_notifications %}
+              <br>
+              <p>You currently have no notifications!</p>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Notifications Display -->
+      {% if new_notifications %}
+      <br>
+      <div class="w3-row-padding">
+        <div class="w3-col m12">
+          <div class="w3-card-2 w3-round w3-white">
+            <div class="w3-container w3-padding" class="new_notifications">
+            <h4>New Notifications:</h4>
+            {% for notification in new_notifications %}
+              <p>
+                <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/"><img src="{{ notification.notifier_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
+                <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/" >{{ notification.notifier_profile.display_name }}</a>
+                {{ notification.action }} your 
+                <a href="{{ request.host_name }}/twotter/twoot/{{ notification.twoot.pk }}/" >twoot</a> on {{ notification.creation_date }}!
+              </p>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Old Notifications Display -->
+      {% if old_notifications %}
+      <br>
+      <div class="w3-row-padding">
+        <div class="w3-col m12">
+          <div class="w3-card-2 w3-round w3-white">
+            <div class="w3-container w3-padding" class="old_notifications">
+            <h4>Old Notifications:</h4>
+            {% for notification in old_notifications %}
+              <p>
+                <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/"><img src="{{ notification.notifier_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
+                <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/" >{{ notification.notifier_profile.display_name }}</a>
+                {{ notification.action }} your 
+                <a href="{{ request.host_name }}/twotter/twoot/{{ notification.twoot.pk }}/" >twoot</a> on {{ notification.creation_date }}!
+              </p><br>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      
+    <!-- End Middle Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+<!-- End Page Container -->
+</div>
+<br>
+{% endblock content %}

@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from .models import TwotterProfile, Twoot, Favorite, ReTwoot
+from .models import TwotterProfile, Twoot, Favorite, ReTwoot, Notification
 from .forms import UserForm, TwotterProfileForm, TwootForm, SettingsForm
 
 from itertools import chain
@@ -103,6 +103,23 @@ def profile_settings(request):
 
     return render(request, 'twotter/settings.html', context)
 
+# Renders the page for changing a profile's notifications
+@login_required
+def profile_notifications(request):
+    twotter_profile = get_object_or_404(User, username=request.user.username).twotter_profile
+    notification_count = twotter_profile.notification_count
+
+    new_notifications = twotter_profile.notifications.all().order_by('-creation_date')[:notification_count]
+    old_notifications = twotter_profile.notifications.all().order_by('-creation_date')[notification_count:]
+
+    twotter_profile.notification_count = 0
+    twotter_profile.save()
+
+    context = {'twotter_profile': twotter_profile, 'new_notifications': new_notifications, 
+                'old_notifications': old_notifications}
+
+    return render(request, 'twotter/notifications.html', context)
+
 # Intended to be accessed via AJAX call. Creates twoot on valid POST request, returns a json object
 # containing all the data needed to dynamically generate the twoot on the page
 @login_required
@@ -155,6 +172,13 @@ def delete_twoot(request):
                 profile_that_favorited.favorite_count -= 1
                 profile_that_favorited.save()
 
+            retwoots = twoot.retwoots.all()
+
+            for retwoot in retwoots:
+                profile_that_retwooted = retwoot.twotter_profile
+                profile_that_retwooted.retwoot_count -= 1
+                profile_that_retwooted.save()
+
             twoot.delete()
 
             response_data = {}
@@ -183,8 +207,21 @@ def favorite_twoot(request):
             favorite.twotter_profile = user_twotter_profile
             favorite.save()
 
+            notification = Notification()
+            notification.twotter_profile = twoot.twotter_profile
+            notification.notifier_profile = request.user.twotter_profile
+            notification.twoot = twoot
+            notification.action = "favorited"
+            notification.save()
+
             twoot.favorite_count += 1
             twoot.save()
+
+            notified_twotter_profile = twoot.twotter_profile
+            # Do not allow users to notify themselves
+            if not notified_twotter_profile is user_twotter_profile:
+                notified_twotter_profile.notification_count += 1
+                notified_twotter_profile.save()
 
             user_twotter_profile.favorite_count += 1
             user_twotter_profile.save()
@@ -215,6 +252,7 @@ def retwoot_twoot(request):
         retwoot = twoot.retwoots.filter(twotter_profile__user__username=request.user.username)
 
         user_twotter_profile = request.user.twotter_profile
+        notified_twotter_profile = twoot.twotter_profile
 
         if not retwoot:
             retwoot = ReTwoot()
@@ -222,8 +260,21 @@ def retwoot_twoot(request):
             retwoot.twotter_profile = user_twotter_profile
             retwoot.save()
 
+            notification = Notification()
+            notification.twotter_profile = twoot.twotter_profile
+            notification.notifier_profile = request.user.twotter_profile
+            notification.twoot = twoot
+            notification.action = "retwooted"
+            notification.save()
+
             twoot.retwoot_count += 1
             twoot.save()
+
+            notified_twotter_profile = twoot.twotter_profile
+            # Do not allow users to notify themselves
+            if not notified_twotter_profile is user_twotter_profile:
+                notified_twotter_profile.notification_count += 1
+                notified_twotter_profile.save()
 
             user_twotter_profile.retwoot_count += 1
             user_twotter_profile.save()

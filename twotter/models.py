@@ -17,6 +17,7 @@ class TwotterProfile(models.Model):
     twoot_count = models.IntegerField(default=0)
     favorite_count = models.IntegerField(default=0)
     retwoot_count = models.IntegerField(default=0)
+    notification_count = models.IntegerField(default=0)
     follower_count = models.IntegerField(default=0)
     following_count = models.IntegerField(default=0)
 
@@ -58,3 +59,16 @@ class ReTwoot(models.Model):
 
     def __unicode__(self):
         return (self.twotter_profile.user.username + " retwooted: " + self.twoot.text)
+
+
+class Notification(models.Model):
+    twotter_profile = models.ForeignKey(TwotterProfile, related_name="notifications")
+    notifier_profile = models.ForeignKey(TwotterProfile)
+
+    action = models.CharField(max_length=20)
+    twoot = models.ForeignKey(Twoot)
+
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return (self.notifier_profile.user.username + " " + self.action + " " + self.twoot.text)
