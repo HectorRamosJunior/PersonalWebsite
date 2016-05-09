@@ -24,6 +24,12 @@ class TwotterProfile(models.Model):
     followers = models.ManyToManyField("self", blank=True)
     following = models.ManyToManyField("self", blank=True)
 
+    def get_retwoot_pks(self):
+        return set(self.retwoots.values_list('twoot', flat=True))
+
+    def get_favorite_pks(self):
+        return set(self.favorites.values_list('twoot', flat=True))
+
     def __unicode__(self):
         return self.user.username
 

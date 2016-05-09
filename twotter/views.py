@@ -28,19 +28,19 @@ def index(request):
     # Merge profile twoots and rewtwoots in order of creation_date. 
     twoots = sorted( chain(retwoots, twoots), key=lambda twoot: twoot.creation_date, reverse=True)
 
-    index_twoots = []
+    feed_twoots = []
     twoot_set = set()
-    # Pass index_twoots in by tuple, first element containing retwoot creation date if it's a tuple
+    # Pass feed_twoots in by tuple, first element containing retwoot creation date if it's a tuple
     # The second element in the tuple always contains the twoot itself. set used to not repeat twoots
     for twoot in twoots:
         if isinstance(twoot, Twoot) and not twoot in twoot_set:
-            index_twoots.append( (None, twoot) )
+            feed_twoots.append( (None, twoot) )
             twoot_set.add(twoot)
         elif isinstance(twoot, ReTwoot) and not twoot.twoot in twoot_set:
-            index_twoots.append( (twoot, twoot.twoot) )
+            feed_twoots.append( (twoot, twoot.twoot) )
             twoot_set.add(twoot.twoot)
 
-    context = {'twotter_profile': twotter_profile, 'twoots': index_twoots}
+    context = {'twotter_profile': twotter_profile, 'twoots': feed_twoots}
 
     return render(request, 'twotter/index.html', context)
 
@@ -227,7 +227,7 @@ def favorite_twoot(request):
             user_twotter_profile.favorite_count += 1
             user_twotter_profile.save()
 
-            response_data = {"favorite_count": twoot.favorite_count}
+            response_data = {"favorite_count": twoot.favorite_count, "action": "added"}
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         elif favorite:
@@ -239,7 +239,7 @@ def favorite_twoot(request):
             user_twotter_profile.favorite_count -= 1
             user_twotter_profile.save()
 
-            response_data = {"favorite_count": twoot.favorite_count}
+            response_data = {"favorite_count": twoot.favorite_count, "action": "removed"}
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
@@ -279,7 +279,7 @@ def retwoot_twoot(request):
             user_twotter_profile.retwoot_count += 1
             user_twotter_profile.save()
 
-            response_data = {"retwoot_count": twoot.retwoot_count}
+            response_data = {"retwoot_count": twoot.retwoot_count, "action": "added"}
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         elif retwoot:
@@ -291,7 +291,7 @@ def retwoot_twoot(request):
             user_twotter_profile.retwoot_count -= 1
             user_twotter_profile.save()
 
-            response_data = {"retwoot_count": twoot.retwoot_count}
+            response_data = {"retwoot_count": twoot.retwoot_count, "action": "removed"}
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:

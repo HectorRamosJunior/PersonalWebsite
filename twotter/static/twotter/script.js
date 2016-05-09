@@ -132,12 +132,21 @@ function favorite_twoot(twoot_pk) {
 
         // handle a successful response
         success : function(json) {
-            console.log("AJAX Call Successful!")
+            console.log("AJAX Call Successful!");
             if (json.favorite_count > 0) {
-                $("#favorite_" + twoot_pk).html('<i class="fa fa-heart"></i> ' + json.favorite_count)
+                $("#favorite_" + twoot_pk).html('<i class="fa fa-heart"></i> ' + json.favorite_count);
+
+                var $favorite = $("#favorite_" + twoot_pk).find(".fa-heart");
+                if (json.action === "added") {
+                    $favorite.addClass("favorited");
+                }
+                else if (json.action === "removed") {
+                    console.log("entered!");
+                    $favorite.removeClass("favorited");
+                }
             }
             else if (json.favorite_count <= 0){
-                $("#favorite_" + twoot_pk).html('<i class="fa fa-heart"></i> ')
+                $("#favorite_" + twoot_pk).html('<i class="fa fa-heart"></i> ');
             }
         },
 
@@ -161,12 +170,20 @@ function retwoot_twoot(twoot_pk) {
 
         // handle a successful response
         success : function(json) {
-            console.log("AJAX Call Successful!")
+            console.log("AJAX Call Successful!");
             if (json.retwoot_count > 0) {
-                $("#retwoot_" + twoot_pk).html('<i class="fa fa-retweet"></i> ' + json.retwoot_count)
+                $("#retwoot_" + twoot_pk).html('<i class="fa fa-retweet"></i> ' + json.retwoot_count);
+
+                var $retwoot = $("#retwoot_" + twoot_pk).find(".fa-retweet");
+                if (json.action === "added") {
+                    $retwoot.addClass("retwooted");
+                }
+                else if (json.action === "removed") {
+                    $retwoot.removeClass("retwooted");
+                }
             }
             else if (json.retwoot_count <= 0){
-                $("#retwoot_" + twoot_pk).html('<i class="fa fa-retweet"></i> ')
+                $("#retwoot_" + twoot_pk).html('<i class="fa fa-retweet"></i> ');
             }
         },
 

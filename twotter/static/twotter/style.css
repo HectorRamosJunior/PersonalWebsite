@@ -6,6 +6,14 @@
     width: 100%;
 }
 
+.favorited {
+    color: red;
+}
+
+.retwooted {
+    color: lime;
+}
+
 .twoot_display {
     word-wrap: break-word;
 }

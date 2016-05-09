@@ -101,8 +101,8 @@
         <h4><a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/" class="twotter_link">{{ twoot.twotter_profile.display_name }}</a></h4><br>
         <hr>
         <p class="twoot_text">{{ twoot.text }}</p>
-        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom retwoot_button" id="retwoot_{{ twoot.pk }}"><i class="fa fa-retweet"></i>{% if twoot.retwoot_count > 0 %} {{ twoot.retwoot_count }} {% endif %}</button>
-        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_{{ twoot.pk }}"><i class="fa fa-heart"></i>{% if twoot.favorite_count > 0 %} {{ twoot.favorite_count }} {% endif %}</button> 
+        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom retwoot_button" id="retwoot_{{ twoot.pk }}"><i class="fa fa-retweet {% if twoot.pk in user_retwoot_pks %}retwooted{% endif %}"></i>{% if twoot.retwoot_count > 0 %} {{ twoot.retwoot_count }} {% endif %}</button>
+        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_{{ twoot.pk }}"><i class="fa fa-heart {% if twoot.pk in user_favorite_pks %}favorited{% endif %}"></i>{% if twoot.favorite_count > 0 %} {{ twoot.favorite_count }} {% endif %}</button> 
         <!-- To be implemented!
         <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> -->
       </div>
