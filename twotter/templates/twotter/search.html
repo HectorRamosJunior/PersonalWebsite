@@ -2,7 +2,13 @@
 {% extends "twotter/base.html" %}
 {% load staticfiles %}
 
-{% block title %}{{ twotter_profile.display_name }}'s Notifications{% endblock title %}
+{% block title %}
+  {% if search %}
+    Search results for {{ search }}
+  {% else %}
+    Twotter Search Page
+  {% endif %}
+{% endblock title %}
 
 {% block content %}
 <!-- Page Container -->
