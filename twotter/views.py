@@ -323,8 +323,7 @@ def twotter_search(request, search=None):
     # Get all twoots that contain the search term
     twoot_results = Twoot.objects.filter(text__contains=search).order_by("-creation_date")
 
-
-    context = {'twotter_profile': twotter_profile, 'search': search, 
+    context = {'twotter_profile': twotter_profile, 'search': search,
                 'profile_results': profile_results, 'twoot_results': twoot_results}
 
     return render(request, 'twotter/search.html', context)

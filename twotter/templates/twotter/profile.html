@@ -73,10 +73,10 @@
         <div class="w3-col m12">
           <div class="w3-card-2 w3-round w3-white">
             <div class="w3-container w3-padding">
-              <h3>{{ twotter_profile.user.username }}'s Profile Page</h3><br>
+              <h3>{{ twotter_profile.display_name }}'s Profile Page</h3><br>
               <h6 id="toggle_links">
-                <a href="#twoots"><button type="button" class="w3-btn w3-theme-d1 twoots_toggle" id="profile_twoots_button">Twoots</button></a>
-                <a href="#favorites"><button type="button" class="w3-btn w3-theme-d1 favorites_toggle" id="profile_favorites_button">Favorites</button></a>
+                <a href="#twoots"><button type="button" class="w3-btn w3-theme-d1 twoots_toggle" id="profile_twoots_button" disabled>{{ twotter_profile.display_name }}'s Twoots</button></a>
+                <a href="#favorites"><button type="button" class="w3-btn w3-theme-d1 favorites_toggle" id="profile_favorites_button">{{ twotter_profile.display_name }}'s Favorites</button></a>
               </h6>
             </div>
           </div>

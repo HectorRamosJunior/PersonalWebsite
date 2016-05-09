@@ -70,7 +70,14 @@
               <h3>Results for "{{ search }}"</h3><br>
             {% if not profile_results and not twoot_results %}
               <p>No results for "{{ search }}"!</p>
+              <p>Try searching again.</p>
+              <input type="text" id="search_input" placeholder="Enter your search here!" maxlength="140" class="w3-border w3-padding w3-margin-bottom input_field" autofocus></input>
+              <a href="" id="search_link"><button class="w3-btn w3-theme" id="search_button" disabled><i class="fa fa-search"></i> Search!</button></a>
             {% else %}
+              <p>
+                {{ profile_results|length }} profiles found,
+                {{ twoot_results|length }} twoots found.
+              </p>
               <h6 id="toggle_links">
                 <a href="#users"><button type="button" class="w3-btn w3-theme-d1" id="profile_results_button" disabled>Profile Results</button></a>
                 <a href="#twoots"><button type="button" class="w3-btn w3-theme-d1" id="twoot_results_button">Twoot Results</button></a>
@@ -149,6 +156,10 @@
         window.location.hash = "";
         toggle_users();
       }
+
+      {% if search and not profile_results %}
+      toggle_twoots(); // This line only shows if there were no profile results in a succesful search
+      {% endif %}
 
       // Only enable the search button if the input field is at least 1 character long
       $("#search_input").bind("propertychange change click keyup input paste", function(){
