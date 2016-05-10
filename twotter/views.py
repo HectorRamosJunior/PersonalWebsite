@@ -44,6 +44,22 @@ def index(request):
 
     return render(request, 'twotter/index.html', context)
 
+# Renders a page for a single given twoot, displays who retwooted and favorited on the twoot
+def profile_list(request):
+    if request.user.is_authenticated():
+        # Creates a Twotter Profile if the current user came from another app
+        create_profile_for_user(str(request.user.username))
+
+        twotter_profile = User.objects.get(username=request.user.username).twotter_profile
+    else:
+        twotter_profile = None
+
+    profile_list = TwotterProfile.objects.all().order_by("-creation_date")
+
+    context = {'twotter_profile': twotter_profile, 'profile_list': profile_list}
+
+    return render(request, 'twotter/profile_list.html', context)
+
 # Renders user profile pages, generates twoot feed from that user and their favorites
 def twotter_profile(request, username):
     twotter_profile = get_object_or_404(User, username=username).twotter_profile

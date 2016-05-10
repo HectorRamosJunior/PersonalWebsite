@@ -97,17 +97,17 @@
 
       <!-- Profile Results Display Section -->
       <div id="profile_results">
+        <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display">
       {% for profile in profile_results %}
-        <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="user_{{ profile.pk }}">
           <br>
           <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/"><img src="{{ profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
           <span class="w3-right w3-opacity">
             <br>
-            <a href="#" class="twotter_link">Created on {{ profile.creation_date }}</a></span>
+            <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/" class="twotter_link">Created on {{ profile.creation_date }}</a></span>
           <h4><a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/" class="twotter_link">{{ profile.display_name }}</a></h4>
           <hr class="w3-clear">
-        </div>
       {% endfor %}
+        </div>
       </div>
 
       <!-- Twoot Results Display Section -->

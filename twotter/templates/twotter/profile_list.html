@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% extends "twotter/base.html" %}
+{% load staticfiles %}
+
+{% block title %}Twotter Profile List{% endblock title %}
+
+{% block content %}
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+  <!-- The Grid -->
+  <div class="w3-row">
+    <!-- Left Column -->
+    <div class="w3-col m4">
+      <!-- Profile -->
+    {% if twotter_profile %}
+      <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+         <h4 class="w3-center">{{ twotter_profile.display_name }}</h4>
+         <p class="w3-center"><img src="{{ twotter_profile.avatar_url }}" class="w3-circle profile_avatar" alt="Avatar"></p>
+         <hr>
+         <p><i class="fa fa-pencil w3-margin-right w3-text-theme"></i> {{ twotter_profile.description }}</p>
+         <p><i class="fa fa-home w3-margin-right w3-text-theme"></i> {{ twotter_profile.location }}</p>
+         <p><i class="fa fa-birthday-cake w3-margin-right w3-text-theme"></i> {{ twotter_profile.birthday }}</p>
+         <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.twoot_count }} Twoots</a></p>
+         <p id="retwoot_count"><i class="fa fa-retweet w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.retwoot_count }} Retwoots</a></p>
+         <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#favorites" class="twotter_link">{{ twotter_profile.favorite_count }} Favorites</a></p>
+         <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
+         <a href="{{ request.host_name }}/twotter/settings/"><button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom" style="width: 100%;">Edit Profile Settings</button></a> 
+        </div>
+      </div>
+      <br>
+    {% else %}
+      <div class="w3-card-2 w3-round w3-white">
+        <div class="w3-container">
+         <h4 class="w3-center">Guest</h4>
+         <p class="w3-center"><img src="http://i.imgur.com/3iMO8An.png" class="w3-circle profile_avatar" alt="Avatar"></p>
+         <hr>
+        </div>
+      </div>
+      <br>
+    {% endif %}
+
+    <!-- End Left Column -->
+    </div>
+    
+    <!-- Middle Column -->
+    <div class="w3-col m8">
+
+      <!-- Search Page Header -->
+      <div class="w3-row-padding">
+        <div class="w3-col m12">
+          <div class="w3-card-2 w3-round w3-white">
+            <div class="w3-container w3-padding">
+              <h3>Twotter Profile List</h3><br>
+              The following are all users of twotter, newest users first!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile List on Twotter -->
+      <div id="profile_list">
+        <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display">
+      {% for profile in profile_list %}
+          <br>
+          <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/"><img src="{{ profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
+          <span class="w3-right w3-opacity">
+            <br>
+            <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/" class="twotter_link">Created on {{ profile.creation_date }}</a></span>
+          <h4><a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/" class="twotter_link">{{ profile.display_name }}</a></h4>
+          <hr class="w3-clear">
+      {% endfor %}
+        </div>
+      </div>
+      
+    <!-- End Middle Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+<!-- End Page Container -->
+</div>
+<br>
+{% endblock content %}
