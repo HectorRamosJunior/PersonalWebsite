@@ -71,14 +71,15 @@
         <div class="w3-col m12">
           <div class="w3-card-2 w3-round w3-white">
             <div class="w3-container w3-padding">
-              <h6 class="w3-opacity">Guest users can't make or interact with twoots. <br><a href="login/">Please sign in or make an account.</a></h6> 
+              <h6 class="w3-opacity">Guests view twoots from all users, and can't interact with twoots.<br>
+              <a href="login/">Please sign in or make an account.</a></h6> 
             </div>
           </div>
         </div>
       </div>
     {% endif %}
 
-    {% if twotter_profile.following_count <= 0 %}
+    {% if user.is_authenticated and twotter_profile.following_count <= 0 %}
       <br>
       <div class="w3-row-padding">
         <div class="w3-col m12">
