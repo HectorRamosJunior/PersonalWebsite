@@ -28,7 +28,7 @@
       {% if user == twotter_profile.user %}
           <a href="{{ request.host_name }}/twotter/settings/"><button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom" style="width: 100%;">Edit Profile Settings</button></a>
       {% elif user.is_authenticated and user != twotter_profile.user %}
-          <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button" id="follow_{{ twotter_profile.pk }}" title="Follow/Unfollow User" style="width: 100%;"><i class="fa w3-margin-right {% if twotter_profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i>Follow/Unfollow User</button>
+          <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button follow_{{ twotter_profile.pk }}"  name="follow_{{ twotter_profile.pk }}" title="Follow/Unfollow User" style="width: 100%;"><i class="fa w3-margin-right {% if twotter_profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i>Follow/Unfollow User</button>
       {% endif %}
         </div>
       </div>
@@ -110,7 +110,7 @@
         {% if user.is_authenticated and user != twoot.twotter_profile.user %}
             <br>
             <span class="w3-right">
-              <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button" id="follow_{{ twoot.twotter_profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if twoot.twotter_profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button>
+              <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button follow_{{ twoot.twotter_profile.pk }}" name="follow_{{ twoot.twotter_profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if twoot.twotter_profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button>
             </span>
         {% endif %}
           </span>
@@ -168,11 +168,17 @@
       var hash = window.location.hash
 
       // Load page on either favorites or twoots depending on the url hash
-      if (hash == "#twoots") {
+      if (hash === "#twoots") {
         toggle_twoots();
       }
-      else if (hash == "#favorites") {
+      else if (hash === "#favorites") {
         toggle_favorites();
+      }
+      else if (hash === "#following") {
+        toggle_following();
+      }
+      else if (hash === "#followers") {
+        toggle_followers();
       }
       else {
         window.location.hash = "";
@@ -188,6 +194,17 @@
       $(".favorites_toggle").click( function() {
          toggle_favorites();
       });
+
+      // Swaps page to view profile's following list on twoots toggle class click
+      $(".following_toggle").click( function() {
+         toggle_twoots();
+      });
+      
+      // Swaps page to view  profile's followers list on twoots toggle class click
+      $(".followers_toggle").click( function() {
+         toggle_favorites();
+      });
+
   });
 
   // Switches the page to the twoots/retwoots representation by hiding favorites and showing twoots

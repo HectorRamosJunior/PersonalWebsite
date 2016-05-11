@@ -131,7 +131,11 @@ def twotter_profile(request, username):
     for favorite in favorites:
         favorite_twoots.append( (favorite.creation_date, favorite.twoot) )
 
-    context = {'twotter_profile': twotter_profile, 'twoots': profile_twoots, 'favorites': favorite_twoots}
+    following = twotter_profile.following.all()
+    followers = twotter_profile.followers.all()
+
+    context = {'twotter_profile': twotter_profile, 'twoots': profile_twoots, 'favorites': favorite_twoots,
+                'following': following, 'followers': followers}
 
     return render(request, 'twotter/profile.html', context)
 

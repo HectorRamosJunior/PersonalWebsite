@@ -25,7 +25,14 @@
           </li>
       {% endif %}
           <br>
-          <a href="{{ request.host_name }}/twotter/twoot/{{ twoot.pk}}/" class="twotter_link">{{ twoot.creation_date }}</a></span>
+          <a href="{{ request.host_name }}/twotter/twoot/{{ twoot.pk}}/" class="twotter_link">{{ twoot.creation_date }}</a>
+      {% if user.is_authenticated and user != twoot.twotter_profile.user %}
+          <br>
+          <span class="w3-right">
+            <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button follow_{{ twoot.twotter_profile.pk }}" name="follow_{{ twoot.twotter_profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if twoot.twotter_profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button>
+          </span>
+      {% endif %}
+        </span>
         <h4><a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/" class="twotter_link">{{ twoot.twotter_profile.display_name }}</a></h4><br>
         <hr class="w3-clear">
         <p class="twoot_text">{{ twoot.text }}</p>

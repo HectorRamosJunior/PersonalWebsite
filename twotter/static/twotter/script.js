@@ -68,7 +68,7 @@ $(document).ready(function() {
 
     // Follow profile, listens for newly created DOM twoot elements
     $(document).on("click", ".follow_button", function(){
-        follow_profile(this.id);
+        follow_profile(this.name);
     })
 
     // Favorite twoots, listens for newly created DOM twoot elements
@@ -138,16 +138,18 @@ function follow_profile(profile_pk) {
         // handle a successful response
         success : function(json) {
             console.log("AJAX Call Successful!");
-            var $follow = $("#follow_" + profile_pk).find(".fa");
+            $(".follow_" + profile_pk).each(function() {
+                var $follow_icon = $(this).find(".fa");
 
-            if (json.action === "added") {
-                $follow.removeClass("fa-user-plus");
-                $follow.addClass("followed fa-user-times");
-            }
-            else if (json.action === "removed") {
-                $follow.removeClass("followed fa-user-times");
-                $follow.addClass("fa-user-plus")
-            }
+                if (json.action === "added") {
+                    $follow_icon.removeClass("fa-user-plus");
+                    $follow_icon.addClass("followed fa-user-times");
+                }
+                else if (json.action === "removed") {
+                    $follow_icon.removeClass("followed fa-user-times");
+                    $follow_icon.addClass("fa-user-plus");
+                }
+            });
 
         },
 

@@ -70,7 +70,7 @@
         {% if user.is_authenticated and user != profile.user %}
             <br>
             <span class="w3-right">
-              <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button" id="follow_{{ profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button>
+              <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button follow_{{ profile.pk }}" name="follow_{{ profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button>
             </span>
         {% endif %}
           </span>

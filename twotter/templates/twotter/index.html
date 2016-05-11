@@ -11,7 +11,7 @@
 {% endblock title %}
 
 {% block content %}
-<!-- Page Container -->
+<!-- Page Container -->k
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
   <!-- The Grid -->
   <div class="w3-row">
@@ -78,7 +78,7 @@
       </div>
     {% endif %}
 
-    {% if twotter_profile.following_count == 0 %}
+    {% if twotter_profile.following_count <= 0 %}
       <br>
       <div class="w3-row-padding">
         <div class="w3-col m12">
@@ -115,7 +115,7 @@
       {% if user.is_authenticated and user != twoot.twotter_profile.user %}
           <br>
           <span class="w3-right">
-            <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button" id="follow_{{ twoot.twotter_profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if twoot.twotter_profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button> 
+            <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button follow_{{ twoot.twotter_profile.pk }}" name="follow_{{ twoot.twotter_profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if twoot.twotter_profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button> 
           </span>
       {% endif %}
         </span>
