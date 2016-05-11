@@ -67,7 +67,7 @@
           <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/"><img src="{{ profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
           <span class="w3-right w3-opacity">
             <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/" class="twotter_link">Created {{ profile.creation_date }}</a>
-        {% if user.is_authenticated and user != twoot.twotter_profile.user %}
+        {% if user.is_authenticated and user != twoot.profile.user %}
             <br>
             <span class="w3-right">
               <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button" id="follow_{{ profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button>
