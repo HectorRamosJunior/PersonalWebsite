@@ -21,17 +21,17 @@
     {% if twotter_profile %}
       <div class="w3-card-2 w3-round w3-white">
         <div class="w3-container">
-          <h4 class="w3-center">{{ twotter_profile.display_name }}</h4>
-          <p class="w3-center"><img src="{{ twotter_profile.avatar_url }}" class="w3-circle profile_avatar" alt="Avatar"></p>
+          <h4 class="w3-center"><a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/" class="twotter_link">{{ twotter_profile.display_name }}</a></h4>
+          <p class="w3-center"><a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/"><img src="{{ twotter_profile.avatar_url }}" class="w3-circle profile_avatar twotter_link" alt="Avatar"></a></p>
           <hr>
           <p><i class="fa fa-pencil w3-margin-right w3-text-theme"></i> {{ twotter_profile.description }}</p>
           <p><i class="fa fa-home w3-margin-right w3-text-theme"></i> {{ twotter_profile.location }}</p>
           <p><i class="fa fa-birthday-cake w3-margin-right w3-text-theme"></i> {{ twotter_profile.birthday }}</p>
-          <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.twoot_count }} Twoots</a></p>
+          <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i><a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.twoot_count }} Twoots</a></p>
           <p id="retwoot_count"><i class="fa fa-retweet w3-margin-right w3-text-theme"></i> {{ twotter_profile.retwoot_count }} Retwoots</p>
-          <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#favorites" class="twotter_link">{{ twotter_profile.favorite_count }} Favorites</a></p>
-          <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.following_count }} Following</p>
-          <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
+          <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i><a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#favorites" class="twotter_link">{{ twotter_profile.favorite_count }} Favorites</a></p>
+          <p><i class="fa fa-user w3-margin-right w3-text-theme"></i><a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#following" class="twotter_link"> {{ twotter_profile.following_count }} Following</a></p>
+          <p><i class="fa fa-user w3-margin-right w3-text-theme"></i><a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#followers" class="twotter_link"> {{ twotter_profile.follower_count }} Followers</a></p>
           <a href="{{ request.host_name }}/twotter/settings/"><button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom" style="width: 100%;">Edit Profile Settings</button></a> 
         </div>
       </div>
