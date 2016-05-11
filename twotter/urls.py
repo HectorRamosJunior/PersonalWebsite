@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^make_twoot/$', views.make_twoot, name='make_twoot'),
     url(r'^settings/$', views.profile_settings, name='profile_settings'),
     url(r'^notifications/$', views.profile_notifications, name='profile_notifications'),
+    url(r'^follow_profile/$', views.follow_profile, name='follow_profile'),
     url(r'^favorite_twoot/$', views.favorite_twoot, name='favorite_twoot'),
     url(r'^retwoot_twoot/$', views.retwoot_twoot, name='retwoot_twoot'),
     url(r'^delete_twoot/$', views.delete_twoot, name='delete_twoot'),

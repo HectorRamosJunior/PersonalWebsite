@@ -21,17 +21,18 @@
     {% if twotter_profile %}
       <div class="w3-card-2 w3-round w3-white">
         <div class="w3-container">
-         <h4 class="w3-center">{{ twotter_profile.display_name }}</h4>
-         <p class="w3-center"><img src="{{ twotter_profile.avatar_url }}" class="w3-circle profile_avatar" alt="Avatar"></p>
-         <hr>
-         <p><i class="fa fa-pencil w3-margin-right w3-text-theme"></i> {{ twotter_profile.description }}</p>
-         <p><i class="fa fa-home w3-margin-right w3-text-theme"></i> {{ twotter_profile.location }}</p>
-         <p><i class="fa fa-birthday-cake w3-margin-right w3-text-theme"></i> {{ twotter_profile.birthday }}</p>
-         <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.twoot_count }} Twoots</a></p>
-         <p id="retwoot_count"><i class="fa fa-retweet w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.retwoot_count }} Retwoots</a></p>
-         <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#favorites" class="twotter_link">{{ twotter_profile.favorite_count }} Favorites</a></p>
-         <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
-         <a href="{{ request.host_name }}/twotter/settings/"><button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom" style="width: 100%;">Edit Profile Settings</button></a> 
+          <h4 class="w3-center">{{ twotter_profile.display_name }}</h4>
+          <p class="w3-center"><img src="{{ twotter_profile.avatar_url }}" class="w3-circle profile_avatar" alt="Avatar"></p>
+          <hr>
+          <p><i class="fa fa-pencil w3-margin-right w3-text-theme"></i> {{ twotter_profile.description }}</p>
+          <p><i class="fa fa-home w3-margin-right w3-text-theme"></i> {{ twotter_profile.location }}</p>
+          <p><i class="fa fa-birthday-cake w3-margin-right w3-text-theme"></i> {{ twotter_profile.birthday }}</p>
+          <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.twoot_count }} Twoots</a></p>
+          <p id="retwoot_count"><i class="fa fa-retweet w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.retwoot_count }} Retwoots</a></p>
+          <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#favorites" class="twotter_link">{{ twotter_profile.favorite_count }} Favorites</a></p>
+          <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.following_count }} Following</p>
+          <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
+          <a href="{{ request.host_name }}/twotter/settings/"><button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom" style="width: 100%;">Edit Profile Settings</button></a> 
         </div>
       </div>
       <br>
@@ -70,7 +71,20 @@
         <div class="w3-col m12">
           <div class="w3-card-2 w3-round w3-white">
             <div class="w3-container w3-padding">
-              <h6 class="w3-opacity">Guest users can't make or favorite twoots. <br><a href="login/">Please sign in or make an account.</a></h6> 
+              <h6 class="w3-opacity">Guest users can't make or interact with twoots. <br><a href="login/">Please sign in or make an account.</a></h6> 
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if twotter_profile.following_count == 0 %}
+      <br>
+      <div class="w3-row-padding">
+        <div class="w3-col m12">
+          <div class="w3-card-2 w3-round w3-white">
+            <div class="w3-container w3-padding">
+              You don't seem to be following anyone yet. <br><a href="{{ request.host_name }}/twotter/profile_list/">Why not check out the user list?</a>
             </div>
           </div>
         </div>
@@ -97,12 +111,20 @@
           </li>
       {% endif %}
           <br>
-          <a href="{{ request.host_name }}/twotter/twoot/{{ twoot.pk}}/" class="twotter_link">{{ twoot.creation_date }}</a></span>
-        <h4><a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/" class="twotter_link">{{ twoot.twotter_profile.display_name }}</a></h4><br>
-        <hr>
+          <a href="{{ request.host_name }}/twotter/twoot/{{ twoot.pk}}/" class="twotter_link">{{ twoot.creation_date }}</a>
+      {% if user.is_authenticated and user != twoot.twotter_profile.user %}
+          <br>
+          <span class="w3-right">
+            <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button" id="follow_{{ twoot.twotter_profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if twoot.twotter_profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button> 
+          </span>
+      {% endif %}
+        </span>
+        <h4><a href="{{ request.host_name }}/twotter/user/{{ twoot.twotter_profile.user.username }}/" class="twotter_link">{{ twoot.twotter_profile.display_name }}</a>
+        </h4><br>
+        <hr class="w3-clear">
         <p class="twoot_text">{{ twoot.text }}</p>
-        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom retwoot_button" id="retwoot_{{ twoot.pk }}"><i class="fa fa-retweet {% if twoot.pk in user_retwoot_pks %}retwooted{% endif %}"></i>{% if twoot.retwoot_count > 0 %} {{ twoot.retwoot_count }} {% endif %}</button>
-        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_{{ twoot.pk }}"><i class="fa fa-heart {% if twoot.pk in user_favorite_pks %}favorited{% endif %}"></i>{% if twoot.favorite_count > 0 %} {{ twoot.favorite_count }} {% endif %}</button> 
+        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom retwoot_button" id="retwoot_{{ twoot.pk }}" title="Retwoot Twoot"><i class="fa fa-retweet {% if twoot.pk in user_retwoot_pks %}retwooted{% endif %}"></i>{% if twoot.retwoot_count > 0 %} {{ twoot.retwoot_count }} {% endif %}</button>
+        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom favorite_button" id="favorite_{{ twoot.pk }}" title="Favorite Twoot"><i class="fa fa-heart {% if twoot.pk in user_favorite_pks %}favorited{% endif %}"></i>{% if twoot.favorite_count > 0 %} {{ twoot.favorite_count }} {% endif %}</button> 
         <!-- To be implemented!
         <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> -->
       </div>

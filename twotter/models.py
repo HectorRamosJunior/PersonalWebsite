@@ -7,7 +7,7 @@ class TwotterProfile(models.Model):
     user = models.OneToOneField(User, related_name='twotter_profile')
     creation_date = models.DateTimeField(auto_now_add=True)
 
-    display_name = models.CharField(max_length=25)
+    display_name = models.CharField(max_length=15)
     description = models.CharField(max_length=50, default="Not Set Yet")
     location = models.CharField(max_length=25, default="Not Set Yet")
     birthday = models.CharField(max_length=25, default="Not Set Yet")
@@ -21,8 +21,10 @@ class TwotterProfile(models.Model):
     follower_count = models.IntegerField(default=0)
     following_count = models.IntegerField(default=0)
 
-    followers = models.ManyToManyField("self", blank=True)
-    following = models.ManyToManyField("self", blank=True)
+    following = models.ManyToManyField("self", related_name="followers")
+
+    def get_following_pks(self):
+        return set(self.following.all().values_list('pk', flat=True))
 
     def get_retwoot_pks(self):
         return set(self.retwoots.values_list('twoot', flat=True))
@@ -72,7 +74,7 @@ class Notification(models.Model):
     notifier_profile = models.ForeignKey(TwotterProfile)
 
     action = models.CharField(max_length=20)
-    twoot = models.ForeignKey(Twoot)
+    twoot = models.ForeignKey(Twoot, blank=True, null=True)
 
     creation_date = models.DateTimeField(auto_now_add=True)
 

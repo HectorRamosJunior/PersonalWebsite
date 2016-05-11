@@ -19,18 +19,30 @@ def index(request):
         create_profile_for_user(str(request.user.username))
 
         twotter_profile = User.objects.get(username=request.user.username).twotter_profile
+        following_pks = twotter_profile.following.all().values_list('pk', flat=True)
+
+        twoots = Twoot.objects.filter(
+                                        Q(twotter_profile=twotter_profile) 
+                                        | # Merges the two queries
+                                        Q(twotter_profile__pk__in=following_pks)
+                                     ).order_by("-creation_date")
+        retwoots = Twoot.objects.filter(
+                                        Q(twotter_profile=twotter_profile) 
+                                        | # Merges the two queries
+                                        Q(twotter_profile__pk__in=following_pks)
+                                     ).order_by("-creation_date")
     else:
         twotter_profile = None
-
-    twoots = Twoot.objects.all().order_by('-creation_date')
-    retwoots = ReTwoot.objects.all().order_by('-creation_date')
+        twoots = Twoot.objects.all().order_by('-creation_date')
+        retwoots = ReTwoot.objects.all().order_by('-creation_date')
 
     # Merge profile twoots and rewtwoots in order of creation_date. 
     twoots = sorted( chain(retwoots, twoots), key=lambda twoot: twoot.creation_date, reverse=True)
 
     feed_twoots = []
     twoot_set = set()
-    # Pass feed_twoots in by tuple, first element containing retwoot creation date if it's a tuple
+
+    # Pass feed_twoots in by tuple, first element containing retwoot creation date if the element is a retwoot
     # The second element in the tuple always contains the twoot itself. set used to not repeat twoots
     for twoot in twoots:
         if isinstance(twoot, Twoot) and not twoot in twoot_set:
@@ -60,6 +72,37 @@ def profile_list(request):
 
     return render(request, 'twotter/profile_list.html', context)
 
+# Renders the page containing the search request
+def twotter_search(request, search=None):
+    if request.user.is_authenticated():
+        # Creates a Twotter Profile if the current user came from another app
+        create_profile_for_user(str(request.user.username))
+
+        twotter_profile = User.objects.get(username=request.user.username).twotter_profile
+    else:
+        twotter_profile = None
+
+    # If a search wasn't conducted yet (checked via url) render base search page
+    if search == None:
+        return render(request, 'twotter/search.html', {'twotter_profile': twotter_profile})
+
+    # Handle spaces in search requests
+    search = search.replace("%20", " ")
+
+    # Get profiles and usernames that contain the search term
+    profile_results = TwotterProfile.objects.filter(
+                                                    Q(user__username__contains=search) 
+                                                    | # Merges the two queries
+                                                    Q(display_name__contains=search)
+                                                    ).order_by("-creation_date")
+    # Get all twoots that contain the search term
+    twoot_results = Twoot.objects.filter(text__contains=search).order_by("-creation_date")
+
+    context = {'twotter_profile': twotter_profile, 'search': search,
+                'profile_results': profile_results, 'twoot_results': twoot_results}
+
+    return render(request, 'twotter/search.html', context)
+
 # Renders user profile pages, generates twoot feed from that user and their favorites
 def twotter_profile(request, username):
     twotter_profile = get_object_or_404(User, username=username).twotter_profile
@@ -72,7 +115,8 @@ def twotter_profile(request, username):
 
     profile_twoots = []
     twoot_set = set()
-    # Pass profile_twoots in by tuple, first element containing retwoot creation date if it's a tuple
+
+    # Pass profile_twoots in by tuple, first element containing retwoot creation date if the element is a retwoot
     # The second element in the tuple always contains the twoot itself. set used to not repeat twoots
     for twoot in twoots:
         if isinstance(twoot, Twoot) and not twoot in twoot_set:
@@ -118,24 +162,6 @@ def profile_settings(request):
     context = {'twotter_profile': twotter_profile, 'settings_form': settings_form, 'saved': saved}
 
     return render(request, 'twotter/settings.html', context)
-
-# Renders the page for changing a profile's notifications
-@login_required
-def profile_notifications(request):
-    twotter_profile = get_object_or_404(User, username=request.user.username).twotter_profile
-    new_notification_count = twotter_profile.notification_count
-
-    notifications = twotter_profile.notifications.all().order_by('-creation_date')
-    new_notifications = notifications[:new_notification_count]
-    old_notifications = notifications[new_notification_count:]
-
-    twotter_profile.notification_count = 0
-    twotter_profile.save()
-
-    context = {'twotter_profile': twotter_profile, 'notification_count': len(notifications),
-            'new_notifications': new_notifications, 'old_notifications': old_notifications}
-
-    return render(request, 'twotter/notifications.html', context)
 
 # Intended to be accessed via AJAX call. Creates twoot on valid POST request, returns a json object
 # containing all the data needed to dynamically generate the twoot on the page
@@ -209,7 +235,7 @@ def delete_twoot(request):
     else:
         return redirect('/twotter/')
 
-# Intended to be accessed via AJAX call. Favorites twoot on valid POST request
+# Intended to be accessed via AJAX call. Favorites twoot via user on valid request.
 @login_required
 def favorite_twoot(request):
     if request.method == "POST":
@@ -313,36 +339,65 @@ def retwoot_twoot(request):
     else:
         return redirect('/twotter/')
 
-# Renders the page containing the search request
-def twotter_search(request, search=None):
-    if request.user.is_authenticated():
-        # Creates a Twotter Profile if the current user came from another app
-        create_profile_for_user(str(request.user.username))
+# Intended to be accessed via AJAX call. Follows twotter profile for the user
+@login_required
+def follow_profile(request):
+    if request.method == "POST":
+        user_twotter_profile = request.user.twotter_profile
+        profile_to_follow = get_object_or_404(TwotterProfile, pk=request.POST.get("profile_pk"))
 
-        twotter_profile = User.objects.get(username=request.user.username).twotter_profile
+        if not profile_to_follow in user_twotter_profile.following.all():
+            # Do not allow users to follow themselves
+            if user_twotter_profile == profile_to_follow:
+                return 
+
+            user_twotter_profile.following.add(profile_to_follow)
+            user_twotter_profile.following_count += 1
+            user_twotter_profile.save()
+
+            profile_to_follow.follower_count += 1
+            profile_to_follow.save()
+
+            notification = Notification()
+            notification.twotter_profile = profile_to_follow
+            notification.notifier_profile = user_twotter_profile
+            notification.action = "followed"
+            notification.save()
+
+            response_data = {"follower_count": profile_to_follow.follower_count, "action": "added"}
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        else:
+            user_twotter_profile.following.remove(profile_to_follow)
+            user_twotter_profile.following_count -= 1
+            user_twotter_profile.save()
+
+            profile_to_follow.follower_count -= 1
+            profile_to_follow.save()
+
+            response_data = {"follower_count": profile_to_follow.follower_count, "action": "removed"}
+
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
-        twotter_profile = None
+        return redirect('/twotter/')
 
-    # If a search wasn't conducted yet (checked via url) render base search page
-    if search == None:
-        return render(request, 'twotter/search.html', {'twotter_profile': twotter_profile})
+# Renders the page for viewing a profile's notifications
+@login_required
+def profile_notifications(request):
+    twotter_profile = get_object_or_404(User, username=request.user.username).twotter_profile
+    new_notification_count = twotter_profile.notification_count
 
-    # Handle spaces in search requests
-    search = search.replace("%20", " ")
+    notifications = twotter_profile.notifications.all().order_by('-creation_date')
+    new_notifications = notifications[:new_notification_count]
+    old_notifications = notifications[new_notification_count:]
 
-    # Get profiles and usernames that contain the search term
-    profile_results = TwotterProfile.objects.filter(
-                                                    Q(user__username__contains=search) 
-                                                    | # Merges the two queries
-                                                    Q(display_name__contains=search)
-                                                    ).order_by("-creation_date")
-    # Get all twoots that contain the search term
-    twoot_results = Twoot.objects.filter(text__contains=search).order_by("-creation_date")
+    twotter_profile.notification_count = 0
+    twotter_profile.save()
 
-    context = {'twotter_profile': twotter_profile, 'search': search,
-                'profile_results': profile_results, 'twoot_results': twoot_results}
+    context = {'twotter_profile': twotter_profile, 'notification_count': len(notifications),
+            'new_notifications': new_notifications, 'old_notifications': old_notifications}
 
-    return render(request, 'twotter/search.html', context)
+    return render(request, 'twotter/notifications.html', context)
 
 # Renders the page which handles both registration and login. On valid registration,
 # a user is added to django auth users, and a twotter profile is created for that user.

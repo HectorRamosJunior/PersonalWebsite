@@ -36,7 +36,7 @@
     <li><a href="{{ request.host_name }}/twotter/" class="w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Twotter Feed</a></li>
   {% if user.is_authenticated %}
     <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/user/{{ user.username }}/" class="w3-padding-large w3-hover-white" title="Account Profile"><i class="fa fa-user"></i></a></li>
-    <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/profile_list/" class="w3-padding-large w3-hover-white" title="Twotter Profiles List"><i class="fa fa-list"></i></a></li>
+    <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/profile_list/" class="w3-padding-large w3-hover-white" title="User List"><i class="fa fa-users"></i></a></li>
     <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/search/" class="w3-padding-large w3-hover-white" title="Twotter Search"><i class="fa fa-search"></i></a></li>
     <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/notifications/" class="w3-padding-large w3-hover-white" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-red">
       {% if user.twotter_profile.notification_count > 0 %}
@@ -49,7 +49,7 @@
     -->
   {% else %}
     <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/search/" class="w3-padding-large w3-hover-white" title="Twotter Search"><i class="fa fa-search"></i></a></li>
-    <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/profile_list/" class="w3-padding-large w3-hover-white" title="Twotter Profile List"><i class="fa fa-list"></i></a></li>   
+    <li class="w3-hide-small"><a href="{{ request.host_name }}/twotter/profile_list/" class="w3-padding-large w3-hover-white" title="User List"><i class="fa fa-list"></i></a></li>   
   {% endif %}
     <li class="w3-hide-small w3-right w3-dropdown-hover">
   {% if user.is_authenticated %}
@@ -71,26 +71,27 @@
     <ul class="w3-navbar w3-left-align w3-large w3-theme">
     {% if user.is_authenticated %}
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/user/{{ user.username }}/">Profile</a></li>
-      <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/profile_list/">Twotter Profiles Listing</a></li>
-      <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/search/">Search</a></li>
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/notifications/">{{ user.twotter_profile.notification_count }} New Notifications</a></li>
+      <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/profile_list/">User List</a></li>
+      <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/search/">Search</a></li>
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/settings/">Settings</a></li>
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/logout/">Logout</a></li>
     {% else %}
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/login/">Sign In/Up</a></li>
       <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/search/">Twotter Search</a></li>
-      <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/profile_list/">Twotter Profile Listing</a></li>
+      <li><a class="w3-padding-large" href="{{ request.host_name }}/twotter/profile_list/">User List</a></li>
     {% endif %}
     </ul>
   </div>
 
-
+{% with user.twotter_profile.get_following_pks as user_following_pks %}
 {% with user.twotter_profile.get_retwoot_pks as user_retwoot_pks %}
 {% with user.twotter_profile.get_favorite_pks as user_favorite_pks %}
 
   {% block content %}
   {% endblock content %}
 
+{% endwith %}
 {% endwith %}
 {% endwith %}
 </body>

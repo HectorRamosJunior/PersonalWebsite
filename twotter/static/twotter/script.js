@@ -66,6 +66,11 @@ $(document).ready(function() {
         make_twoot($twoot_text)
     });
 
+    // Follow profile, listens for newly created DOM twoot elements
+    $(document).on("click", ".follow_button", function(){
+        follow_profile(this.id);
+    })
+
     // Favorite twoots, listens for newly created DOM twoot elements
     $(document).on("click", ".favorite_button", function(){
         favorite_twoot(this.id);
@@ -121,6 +126,40 @@ function make_twoot($twoot_text) {
 
 // Makes an AJAX call to favorite/unfavorite the given twoot on the page.
 // If successful, the twoot's favorite button number will change dynamically 
+function follow_profile(profile_pk) {
+    profile_pk = profile_pk.replace('follow_', '');
+
+    // Ajax call to upload the score to the website's backend
+    $.ajax({
+        url : window.location.origin + "/twotter/follow_profile/",
+        type : "POST", // http method
+        data : { profile_pk : profile_pk, csrfmiddlewaretoken: window.CSRF_TOKEN },
+
+        // handle a successful response
+        success : function(json) {
+            console.log("AJAX Call Successful!");
+            var $follow = $("#follow_" + profile_pk).find(".fa");
+
+            if (json.action === "added") {
+                $follow.removeClass("fa-user-plus");
+                $follow.addClass("followed fa-user-times");
+            }
+            else if (json.action === "removed") {
+                $follow.removeClass("followed fa-user-times");
+                $follow.addClass("fa-user-plus")
+            }
+
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log("AJAX Call Failed!")
+        }
+    });
+};
+
+// Makes an AJAX call to favorite/unfavorite the given twoot on the page.
+// If successful, the twoot's favorite button number will change dynamically 
 function favorite_twoot(twoot_pk) {
     twoot_pk = twoot_pk.replace('favorite_', '');
 
@@ -141,13 +180,13 @@ function favorite_twoot(twoot_pk) {
                     $favorite.addClass("favorited");
                 }
                 else if (json.action === "removed") {
-                    console.log("entered!");
                     $favorite.removeClass("favorited");
                 }
             }
             else if (json.favorite_count <= 0){
                 $("#favorite_" + twoot_pk).html('<i class="fa fa-heart"></i> ');
             }
+
         },
 
         // handle a non-successful response
@@ -185,6 +224,7 @@ function retwoot_twoot(twoot_pk) {
             else if (json.retwoot_count <= 0){
                 $("#retwoot_" + twoot_pk).html('<i class="fa fa-retweet"></i> ');
             }
+
         },
 
         // handle a non-successful response
