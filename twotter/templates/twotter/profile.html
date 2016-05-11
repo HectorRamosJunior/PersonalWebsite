@@ -80,6 +80,9 @@
               <h6 id="toggle_links">
                 <a href="#twoots"><button type="button" class="w3-btn w3-theme-d1 twoots_toggle" id="profile_twoots_button" disabled>{{ twotter_profile.display_name }}'s Twoots</button></a>
                 <a href="#favorites"><button type="button" class="w3-btn w3-theme-d1 favorites_toggle" id="profile_favorites_button">{{ twotter_profile.display_name }}'s Favorites</button></a>
+                <br>
+                <a href="#following"><button type="button" class="w3-btn w3-theme-d1 following_toggle" id="profile_following_button">Following {{ twotter_profile.following_count }}</button></a>
+                <a href="#followers"><button type="button" class="w3-btn w3-theme-d1 followers_toggle" id="profile_followers_button">{{ twotter_profile.follower_count }} Followers</button></a>
               </h6>
             </div>
           </div>
@@ -87,7 +90,7 @@
       </div>
 
       <!-- Twoot Display Section -->
-      <div id="profile_twoots">
+      <div class="display_section" id="profile_twoots">
       {% for retwoot_creation_date, twoot in twoots %}
         <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}">
         {% if retwoot_creation_date %}
@@ -126,7 +129,7 @@
       </div>
 
       <!-- Favorite Display Section -->
-      <div id="profile_favorites">
+      <div class="display_section" id="profile_favorites">
       {% for favorite_creation_date, twoot in favorites %}
         <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display" id="twoot_{{ twoot.pk }}">
           <i class="fa fa-heart"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/">{{ twotter_profile.display_name }}</a> favorited this on {{ favorite_creation_date }}<br><br>
@@ -160,6 +163,47 @@
       {% endfor %}
       </div>
 
+      <!-- Following Display Section -->
+      <div class="display_section" id="profile_following">
+        <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display">
+      {% for profile in following %}
+          <br>
+          <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/"><img src="{{ profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
+          <span class="w3-right w3-opacity">
+            <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/" class="twotter_link">Created {{ profile.creation_date }}</a>
+        {% if user.is_authenticated and user != profile.user %}
+            <br>
+            <span class="w3-right">
+              <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button follow_{{ profile.pk }}" name="follow_{{ profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button>
+            </span>
+        {% endif %}
+          </span>
+          <h4><a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/" class="twotter_link">{{ profile.display_name }}</a></h4>
+          <hr class="w3-clear">
+      {% endfor %}
+        </div>
+      </div>
+
+      <!-- Followers Display Section -->
+      <div class="display_section" id="profile_followers">
+        <div class="w3-container w3-card-2 w3-white w3-round w3-margin twoot_display">
+      {% for profile in followers %}
+          <br>
+          <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/"><img src="{{ profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
+          <span class="w3-right w3-opacity">
+            <a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/" class="twotter_link">Created {{ profile.creation_date }}</a>
+        {% if user.is_authenticated and user != profile.user %}
+            <br>
+            <span class="w3-right">
+              <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom follow_button follow_{{ profile.pk }}" name="follow_{{ profile.pk }}" title="Follow/Unfollow User"><i class="fa {% if profile.pk in user_following_pks %}fa-user-times followed{% else %}fa-user-plus{% endif %}"></i></button>
+            </span>
+        {% endif %}
+          </span>
+          <h4><a href="{{ request.host_name }}/twotter/user/{{ profile.user.username }}/" class="twotter_link">{{ profile.display_name }}</a></h4>
+          <hr class="w3-clear">
+      {% endfor %}
+        </div>
+      </div>
       
     <!-- End Middle Column -->
     </div>
@@ -194,43 +238,69 @@
 
       // Swaps page to view twoots/retwoots on twoots toggle class click
       $(".twoots_toggle").click( function() {
-         toggle_twoots();
+        toggle_twoots();
       });
       
       // Swaps page to view twoots/retwoots on twoots toggle class click
       $(".favorites_toggle").click( function() {
-         toggle_favorites();
+        toggle_favorites();
       });
 
       // Swaps page to view profile's following list on twoots toggle class click
       $(".following_toggle").click( function() {
-         toggle_twoots();
+        toggle_following();
       });
       
       // Swaps page to view  profile's followers list on twoots toggle class click
       $(".followers_toggle").click( function() {
-         toggle_favorites();
+        toggle_followers();
       });
 
   });
 
   // Switches the page to the twoots/retwoots representation by hiding favorites and showing twoots
   function toggle_twoots() {
-    $("#profile_favorites").hide();
-    $("#profile_twoots").show();
+    enable_buttons_hide_displays();
 
-    $("#profile_favorites_button").prop("disabled", false);
     $("#profile_twoots_button").prop("disabled", true);
+    $("#profile_twoots").show();
   };
 
-  // Switches the page to the twoots/retwoots representation by hiding twoots and showing favorites
+  // Switches the page to the twoots/retwoots representation by hiding favorites and showing twoots
   function toggle_favorites() {
-    $("#profile_twoots").hide();
-    $("#profile_favorites").show();
+    enable_buttons_hide_displays();
 
-    $("#profile_twoots_button").prop("disabled", false);
     $("#profile_favorites_button").prop("disabled", true);
+    $("#profile_favorites").show();
   };
+
+  // Switches the page to the twoots/retwoots representation by hiding favorites and showing twoots
+  function toggle_following() {
+    enable_buttons_hide_displays();
+
+    $("#profile_following_button").prop("disabled", true);
+    $("#profile_following").show();
+  };
+
+  // Switches the page to the twoots/retwoots representation by hiding favorites and showing twoots
+  function toggle_followers() {
+    enable_buttons_hide_displays();
+
+    $("#profile_followers_button").prop("disabled", true);
+    $("#profile_followers_button").show();
+  };
+
+  // Enables all toggle buttons and hides all displays.
+  function enable_buttons_hide_displays() {
+    $("#toggle_links").find("button").each( function() {
+      $(this).prop("disabled", false);
+    });
+
+    $(".display_section").each( function() {
+      $(this).hide();
+    });
+  };
+
 </script>
 <br>
 {% endblock content %}

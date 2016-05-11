@@ -359,6 +359,7 @@ def follow_profile(request):
             user_twotter_profile.following_count += 1
             user_twotter_profile.save()
 
+            profile_to_follow.followers.add(user_twotter_profile)
             profile_to_follow.follower_count += 1
             profile_to_follow.notification_count += 1
             profile_to_follow.save()
@@ -377,6 +378,7 @@ def follow_profile(request):
             user_twotter_profile.following_count -= 1
             user_twotter_profile.save()
 
+            profile_to_follow.followers.remove(user_twotter_profile)
             profile_to_follow.follower_count -= 1
             profile_to_follow.save()
 
