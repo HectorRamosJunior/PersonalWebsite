@@ -21,7 +21,7 @@ class TwotterProfile(models.Model):
     follower_count = models.IntegerField(default=0)
     following_count = models.IntegerField(default=0)
 
-    following = models.ManyToManyField("self", related_name="followers")
+    following = models.ManyToManyField("self", symmetrical=False, related_name="followers")
 
     def get_following_pks(self):
         return set(self.following.all().values_list('pk', flat=True))
