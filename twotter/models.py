@@ -79,5 +79,9 @@ class Notification(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return (self.notifier_profile.user.username + " " + self.action + " " + 
+        if self.action == "favorited" or self.action == "retwooted":
+            return (self.notifier_profile.user.username + " " + self.action + " " + 
                 self.twotter_profile.user.username + "'s twoot: " + self.twoot.text)
+        elif self.action == "followed":
+            return (self.notifier_profile.user.username + " " + self.action + " " + 
+                self.twotter_profile.user.username )

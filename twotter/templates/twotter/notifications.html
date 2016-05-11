@@ -23,6 +23,7 @@
          <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.twoot_count }} Twoots</a></p>
          <p id="retwoot_count"><i class="fa fa-retweet w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#twoots" class="twotter_link">{{ twotter_profile.retwoot_count }} Retwoots</a></p>
          <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i> <a href="{{ request.host_name }}/twotter/user/{{ twotter_profile.user.username }}/#favorites" class="twotter_link">{{ twotter_profile.favorite_count }} Favorites</a></p>
+         <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.following_count }} Following</p>
          <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
          <a href="{{ request.host_name }}/twotter/settings/"><button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom" style="width: 100%;">Edit Profile Settings</button></a> 
         </div>
@@ -58,14 +59,22 @@
           <div class="w3-card-2 w3-round w3-white">
             <div class="w3-container w3-padding" class="new_notifications">
             <h4>New Notifications:</h4>
-            {% for notification in new_notifications %}
+          {% for notification in new_notifications %}
+            {% if notification.action == "followed" %}
+              <p>
+                <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/"><img src="{{ notification.notifier_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
+                <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/" >{{ notification.notifier_profile.display_name }}</a>
+                {{ notification.action }} you on {{ notification.creation_date }}!
+              </p><br>
+            {% else %}
               <p>
                 <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/"><img src="{{ notification.notifier_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
                 <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/" >{{ notification.notifier_profile.display_name }}</a>
                 {{ notification.action }} your 
                 <a href="{{ request.host_name }}/twotter/twoot/{{ notification.twoot.pk }}/" >twoot</a> on {{ notification.creation_date }}!
               </p><br>
-            {% endfor %}
+            {% endif %}
+          {% endfor %}
             </div>
           </div>
         </div>
@@ -80,14 +89,22 @@
           <div class="w3-card-2 w3-round w3-white">
             <div class="w3-container w3-padding" class="old_notifications">
             <h4>Old Notifications:</h4>
-            {% for notification in old_notifications %}
+          {% for notification in old_notifications %}
+            {% if notification.action == "followed" %}
+              <p>
+                <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/"><img src="{{ notification.notifier_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
+                <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/" >{{ notification.notifier_profile.display_name }}</a>
+                {{ notification.action }} you on {{ notification.creation_date }}!
+              </p><br>
+            {% else %}
               <p>
                 <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/"><img src="{{ notification.notifier_profile.avatar_url }}" alt="Avatar" class="w3-left w3-circle w3-margin-right twotter_link twoot_avatar"></a>
                 <a href="{{ request.host_name }}/twotter/user/{{ notification.notifier_profile.user.username }}/" >{{ notification.notifier_profile.display_name }}</a>
                 {{ notification.action }} your 
                 <a href="{{ request.host_name }}/twotter/twoot/{{ notification.twoot.pk }}/" >twoot</a> on {{ notification.creation_date }}!
               </p><br>
-            {% endfor %}
+            {% endif %}
+          {% endfor %}
             </div>
           </div>
         </div>

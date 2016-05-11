@@ -356,6 +356,7 @@ def follow_profile(request):
             user_twotter_profile.save()
 
             profile_to_follow.follower_count += 1
+            profile_to_follow.notification_count += 1
             profile_to_follow.save()
 
             notification = Notification()

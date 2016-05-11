@@ -23,6 +23,7 @@
           <p id="twoot_count"><i class="fa fa-file-text-o w3-margin-right w3-text-theme"></i> <a href="#twoots" class="twotter_link twoots_toggle">{{ twotter_profile.twoot_count }} Twoots</a></p>
           <p id="retwoot_count"><i class="fa fa-retweet w3-margin-right w3-text-theme"></i> <a href="#twoots" class="twotter_link twoots_toggle">{{ twotter_profile.retwoot_count }} Retwoots</a></p>
           <p id="favorite_count"><i class="fa fa-heart w3-margin-right w3-text-theme"></i> <a href="#favorites" class="twotter_link favorites_toggle">{{ twotter_profile.favorite_count }} Favorites</a></p>
+          <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.following_count }} Following</p>
           <p><i class="fa fa-user w3-margin-right w3-text-theme"></i> {{ twotter_profile.follower_count }} Followers</p>
       {% if user == twotter_profile.user %}
           <a href="{{ request.host_name }}/twotter/settings/"><button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom" style="width: 100%;">Edit Profile Settings</button></a>
