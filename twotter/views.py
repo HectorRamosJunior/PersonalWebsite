@@ -26,7 +26,7 @@ def index(request):
                                         | # Merges the two queries
                                         Q(twotter_profile__pk__in=following_pks)
                                      ).order_by("-creation_date")
-        retwoots = Twoot.objects.filter(
+        retwoots = ReTwoot.objects.filter(
                                         Q(twotter_profile=twotter_profile) 
                                         | # Merges the two queries
                                         Q(twotter_profile__pk__in=following_pks)
