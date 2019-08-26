@@ -261,7 +261,7 @@ ul#nav li.current a { color: #F06000; }
 #resume .header-col { padding-top: 9px; }
 #resume .main-col { padding-right: 10%; }
 
-.education, .work {
+.skill, .work {
    margin-bottom: 48px;
    padding-bottom: 24px;
    border-bottom: 1px solid #E8E8E8;
@@ -326,84 +326,110 @@ ul#nav li.current a { color: #F06000; }
 }
 
 .python {
-  	width: 90%;
+  	width: 75%;
   	-moz-animation: python 2s ease;
   	-webkit-animation: python 2s ease;
 }
-.django {
-  	width: 55%;
-  	-moz-animation: django 2s ease;
-  	-webkit-animation: django 2s ease;
-}
-.cplusplus {
-  	width: 65%;
-  	-moz-animation: cplusplus 2s ease;
-  	-webkit-animation: cplusplus 2s ease;
+.cSharp {
+  	width: 75%;
+  	-moz-animation: cSharp 2s ease;
+  	-webkit-animation: cSharp 2s ease;
 }
 .javascript {
-  	width: 40%;
+  	width: 65%;
   	-moz-animation: javascript 2s ease;
   	-webkit-animation: javascript 2s ease;
 }
 .jquery {
-  	width: 50%;
+  	width: 65%;
   	-moz-animation: jquery 2s ease;
   	-webkit-animation: jquery 2s ease;
 }
-.databases {
+.django {
   	width: 60%;
+  	-moz-animation: django 2s ease;
+  	-webkit-animation: django 2s ease;
+}
+.asp {
+  	width: 60%;
+  	-moz-animation: asp 2s ease;
+  	-webkit-animation: asp 2s ease;
+}
+.databases {
+  	width: 55%;
   	-moz-animation: databases 2s ease;
   	-webkit-animation: databases 2s ease;
+}
+.react {
+  	width: 40%;
+  	-moz-animation: react 2s ease;
+  	-webkit-animation: react 2s ease;
 }
 
 @-moz-keyframes python {
   0%   { width: 0px;  }
-  100% { width: 90%;  }
+  100% { width: 75%;  }
 }
-@-moz-keyframes django {
+@-moz-keyframes cSharp {
   0%   { width: 0px;  }
-  100% { width: 55%;  }
-}
-@-moz-keyframes cplusplus {
-  0%   { width: 0px;  }
-  100% { width: 65%;  }
+  100% { width: 75%;  }
 }
 @-moz-keyframes javascript {
   0%   { width: 0px;  }
-  100% { width: 40%;  }
+  100% { width: 65%;  }
 }
 @-moz-keyframes jquery {
   0%   { width: 0px;  }
-  100% { width: 50%;  }
+  100% { width: 65%;  }
+}
+@-moz-keyframes django {
+  0%   { width: 0px;  }
+  100% { width: 60%;  }
+}
+@-moz-keyframes asp {
+  0%   { width: 0px;  }
+  100% { width: 60%;  }
 }
 @-moz-keyframes databases {
   0%   { width: 0px;  }
-  100% { width: 60%;  }
+  100% { width: 55%;  }
+}
+@-moz-keyframes react {
+  0%   { width: 0px;  }
+  100% { width: 50%;  }
 }
 
 @-webkit-keyframes python {
   0%   { width: 0px;  }
-  100% { width: 90%;  }
+  100% { width: 75%;  }
 }
-@-webkit-keyframes django {
+@-webkit-keyframes cSharp {
   0%   { width: 0px;  }
-  100% { width: 55%;  }
-}
-@-webkit-keyframes cplusplus {
-  0%   { width: 0px;  }
-  100% { width: 65%;  }
+  100% { width: 75%;  }
 }
 @-webkit-keyframes javascript {
   0%   { width: 0px;  }
-  100% { width: 40%;  }
+  100% { width: 65%;  }
 }
 @-webkit-keyframes jquery {
   0%   { width: 0px;  }
-  100% { width: 50%;  }
+  100% { width: 65%;  }
+}
+@-webkit-keyframes django {
+  0%   { width: 0px;  }
+  100% { width: 60%;  }
+}
+@-webkit-keyframes asp {
+  0%   { width: 0px;  }
+  100% { width: 60%;  }
 }
 @-webkit-keyframes databases {
   0%   { width: 0px;  }
-  100% { width: 60%;  }
+  100% { width: 55%;  }
+}
+@-webkit-keyframes react {
+  0%   { width: 0px;  }
+  100% { width: 40%;  }
 }
 
 /* ------------------------------------------------------------------ */
