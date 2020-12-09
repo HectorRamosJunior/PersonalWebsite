@@ -3,7 +3,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from .models import UserProfile, Task
@@ -109,7 +108,7 @@ def register(request):
       login(request, new_user)
 
     else: #If the data was entered incorrectly
-      print user_form.errors, profile_form.errors #Print both form errors!
+      print(user_form.errors, profile_form.errors) #Print both form errors!
 
   else: #If the request is a GET, post the register information forms
     user_form = UserForm()

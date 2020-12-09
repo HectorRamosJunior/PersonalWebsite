@@ -25,7 +25,7 @@ SECRET_KEY = '(%kqo7ear0%#w$^6s-cp(uw3n9jb9+a5use$e*e0a!a9@x)0y3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'hectorramosjr.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '104.131.2.189', 'hectorramosjr.com']
 
 
 # Application definition
@@ -43,13 +43,13 @@ INSTALLED_APPS = [
     'twotter',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]

@@ -4,7 +4,7 @@ from django.db import models
 
 
 class TwotterProfile(models.Model):
-    user = models.OneToOneField(User, related_name='twotter_profile')
+    user = models.OneToOneField(User, related_name='twotter_profile', on_delete=models.CASCADE)
     creation_date = models.DateTimeField(auto_now_add=True)
 
     display_name = models.CharField(max_length=15)
@@ -37,7 +37,7 @@ class TwotterProfile(models.Model):
 
 
 class Twoot(models.Model):
-    twotter_profile = models.ForeignKey(TwotterProfile, related_name="twoots")
+    twotter_profile = models.ForeignKey(TwotterProfile, related_name="twoots", on_delete=models.CASCADE)
     creation_date = models.DateTimeField(auto_now_add=True)
 
     favorite_count = models.IntegerField(default=0)
@@ -50,8 +50,8 @@ class Twoot(models.Model):
 
 
 class Favorite(models.Model):
-    twotter_profile = models.ForeignKey(TwotterProfile, related_name="favorites")
-    twoot = models.ForeignKey(Twoot, related_name="favorites")
+    twotter_profile = models.ForeignKey(TwotterProfile, related_name="favorites", on_delete=models.CASCADE)
+    twoot = models.ForeignKey(Twoot, related_name="favorites", on_delete=models.CASCADE)
 
     creation_date = models.DateTimeField(auto_now_add=True)
 
@@ -60,8 +60,8 @@ class Favorite(models.Model):
 
 
 class ReTwoot(models.Model):
-    twotter_profile = models.ForeignKey(TwotterProfile, related_name="retwoots")
-    twoot = models.ForeignKey(Twoot, related_name="retwoots")
+    twotter_profile = models.ForeignKey(TwotterProfile, related_name="retwoots", on_delete=models.CASCADE)
+    twoot = models.ForeignKey(Twoot, related_name="retwoots", on_delete=models.CASCADE)
 
     creation_date = models.DateTimeField(auto_now_add=True)
 
@@ -70,11 +70,11 @@ class ReTwoot(models.Model):
 
 
 class Notification(models.Model):
-    twotter_profile = models.ForeignKey(TwotterProfile, related_name="notifications")
-    notifier_profile = models.ForeignKey(TwotterProfile)
+    twotter_profile = models.ForeignKey(TwotterProfile, related_name="notifications", on_delete=models.CASCADE)
+    notifier_profile = models.ForeignKey(TwotterProfile, on_delete=models.CASCADE)
 
     action = models.CharField(max_length=20)
-    twoot = models.ForeignKey(Twoot, blank=True, null=True)
+    twoot = models.ForeignKey(Twoot, blank=True, null=True, on_delete=models.CASCADE)
 
     creation_date = models.DateTimeField(auto_now_add=True)
 

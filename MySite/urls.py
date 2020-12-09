@@ -17,9 +17,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^todo/', include('todo.urls', namespace="todo") ),
-    url(r'^AggroEats/', include('AggroEats.urls', namespace="AggroEats") ),
-    url(r'^twotter/', include('twotter.urls', namespace="twotter") ),
+    url(r'^todo/', include(('todo.urls', 'todo'), namespace="todo") ),
+    url(r'^AggroEats/', include(('AggroEats.urls', 'AggroEats'), namespace="AggroEats") ),
+    url(r'^twotter/', include(('twotter.urls', 'twotter'), namespace="twotter") ),
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('website.urls', namespace="website") ),
+    url(r'^', include(('website.urls', 'website'), namespace="website") ),
 ]

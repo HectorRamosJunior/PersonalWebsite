@@ -14,7 +14,7 @@ import json # For the AJAX calls on twotter
 
 # Renders the main index page, generates twoot feed from all users
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         # Creates a Twotter Profile if the current user came from another app
         create_profile_for_user(str(request.user.username))
 
@@ -58,7 +58,7 @@ def index(request):
 
 # Renders a page for a single given twoot, displays who retwooted and favorited on the twoot
 def profile_list(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         # Creates a Twotter Profile if the current user came from another app
         create_profile_for_user(str(request.user.username))
 
@@ -74,7 +74,7 @@ def profile_list(request):
 
 # Renders the page containing the search request
 def twotter_search(request, search=None):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         # Creates a Twotter Profile if the current user came from another app
         create_profile_for_user(str(request.user.username))
 
@@ -172,8 +172,8 @@ def profile_settings(request):
 @login_required
 def make_twoot(request):
     if request.method == "POST":
-        print "Twoot received: "
-        print request.POST.get("twoot_text")
+        print("Twoot received: ")
+        print(request.POST.get("twoot_text"))
         twoot_form = TwootForm({"text": request.POST.get("twoot_text")})
 
         if twoot_form.is_valid():
@@ -196,7 +196,7 @@ def make_twoot(request):
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         else:
-            print twoot_form.errors
+            print(twoot_form.errors)
     else:
         return redirect('/twotter/')
 
@@ -235,7 +235,7 @@ def delete_twoot(request):
 
             return HttpResponse(json.dumps(response_data), content_type="application/json")
         else:
-            print "Someone tried to delete a twoot that wasn't theirs!"
+            print("Someone tried to delete a twoot that wasn't theirs!")
     else:
         return redirect('/twotter/')
 
